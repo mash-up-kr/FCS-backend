@@ -1,0 +1,46 @@
+spring:
+   profiles:
+      active: local
+   jpa:
+      #hibernate:
+         #naming:
+            #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+            #implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+---
+
+spring:
+   profiles: local
+   jpa:
+      show-sql: true
+      generate-ddl: true
+      database-platform: org.hibernate.dialect.MySQL5Dialect
+      hibernate:
+         ddl-auto: update
+
+   datasource:
+      url: jdbc:mysql://localhost:3306/ootd?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+
+logging:
+   level:
+      org.hibernate: debug
+
+---
+
+spring:
+   profiles: prod
+   jpa:
+      show-sql: false
+      generate-ddl: false
+      database-platform: org.hibernate.dialect.MySQL5Dialect
+      hibernate:
+         ddl-auto: none
+         
+   datasource:
+      url: jdbc:mysql://localhost:3306/{url}?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: {username}
+      password: {password}
