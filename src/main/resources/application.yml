@@ -7,6 +7,15 @@ spring:
             #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
             #implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
+cloud:
+   aws:
+      s3:
+         bucket: fcs-ootd
+      region:
+         static: ap-northeast-2
+      stack:
+         auto: false
+         
 ---
 
 spring:
