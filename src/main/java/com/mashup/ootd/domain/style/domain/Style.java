@@ -11,7 +11,9 @@ import javax.persistence.PreUpdate;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @EqualsAndHashCode(of = "id")
 @Getter
 @Entity
