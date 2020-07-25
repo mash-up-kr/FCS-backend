@@ -31,7 +31,7 @@ spring:
       url: jdbc:mysql://localhost:3306/ootd?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
-      password: 1234
+      password: root
 
 logging:
    level:

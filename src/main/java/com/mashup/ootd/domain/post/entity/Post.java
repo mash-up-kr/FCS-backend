@@ -16,6 +16,7 @@ import com.mashup.ootd.domain.user.entity.User;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -30,7 +31,6 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-
 	private String photoUrl;
 	private String message;
 	private String address;
