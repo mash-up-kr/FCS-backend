@@ -6,10 +6,12 @@ import com.mashup.ootd.domain.post.entity.Post;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class PostRequest {
+@ToString
+public class PostCreateRequest {
 
 	private Long userId;
 	private MultipartFile uploadFile;
@@ -20,7 +22,6 @@ public class PostRequest {
 	
 	public Post toEntity(String url) {
 		return Post.builder()
-				.userId(userId)
 				.photoUrl(url)
 				.message(message)
 				.address(address)

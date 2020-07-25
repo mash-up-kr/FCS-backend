@@ -2,7 +2,7 @@ package com.mashup.ootd.domain.post.service;
 
 import org.springframework.stereotype.Service;
 
-import com.mashup.ootd.domain.post.dto.PostRequest;
+import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.repository.PostRepository;
 
@@ -17,7 +17,7 @@ public class PostService {
 
 	private static final String DIRECTORY_NAME = "post";
 
-	public void create(PostRequest dto) {
+	public void create(PostCreateRequest dto) {
 		String url = fileUploader.upload(dto.getUploadFile(), DIRECTORY_NAME);
 
 		Post post = dto.toEntity(url);
