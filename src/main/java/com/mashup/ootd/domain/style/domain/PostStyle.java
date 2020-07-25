@@ -13,12 +13,19 @@ import javax.persistence.PreUpdate;
 
 import com.mashup.ootd.domain.post.entity.Post;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 @Entity
+@Builder(access = AccessLevel.PRIVATE)
 public class PostStyle {
 
 	@Id
@@ -46,6 +53,13 @@ public class PostStyle {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+	
+	public static PostStyle create(Post post, Style style) {
+		return PostStyle.builder()
+				.post(post)
+				.style(style)
+				.build();
 	}
 
 }

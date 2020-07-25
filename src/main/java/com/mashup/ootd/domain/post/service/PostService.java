@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.repository.PostRepository;
+import com.mashup.ootd.domain.style.service.PostStyleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,7 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final FileUploader fileUploader;
+	private final PostStyleService postStyleService;
 
 	private static final String DIRECTORY_NAME = "post";
 
@@ -23,6 +25,7 @@ public class PostService {
 		Post post = dto.toEntity(url);
 
 		postRepository.save(post);
+		postStyleService.save(post, dto.getStyleIds());
 	}
-	
+
 }

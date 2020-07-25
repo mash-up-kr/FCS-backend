@@ -1,5 +1,7 @@
 package com.mashup.ootd.domain.post.dto;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mashup.ootd.domain.post.entity.Post;
@@ -19,7 +21,8 @@ public class PostCreateRequest {
 	private String address;
 	private String weather;
 	private String temperature;
-	
+	private List<Long> styleIds;
+
 	public Post toEntity(String url) {
 		return Post.builder()
 				.photoUrl(url)
