@@ -1,5 +1,6 @@
 package com.mashup.ootd.domain.post.service;
 
+import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +10,9 @@ import com.mashup.ootd.domain.post.repository.PostRepository;
 import com.mashup.ootd.domain.style.service.PostStyleService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +32,12 @@ public class PostService {
 
 		postRepository.save(post);
 		postStyleService.save(post, dto.getStyleIds());
+	}
+
+	public List<PostGetResponse> listTop20(){
+		return postRepository.findTop20ByOrderByIdDesc().stream()
+				.map(PostGetResponse::new)
+				.collect(Collectors.toList());
 	}
 
 }

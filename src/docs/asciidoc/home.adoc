@@ -27,6 +27,21 @@ include::{snippets}/upload/request-parameters.adoc[]
 include::{snippets}/upload/http-response.adoc[]
 
 
+== 피드 정보
+
+=== Request
+
+include::{snippets}/post-list/curl-request.adoc[]
+
+include::{snippets}/post-list/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/post-list/http-response.adoc[]
+
+include::{snippets}/post-list/response-fields.adoc[]
+
+
 [[Style]]
 == 스타일 정보
 

@@ -1,12 +1,16 @@
 package com.mashup.ootd.web.controller.post;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
+import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import com.mashup.ootd.domain.post.service.PostService;
 import com.mashup.ootd.web.message.OotdResponse;
 
@@ -30,5 +34,19 @@ public class PostController {
 						.msg("업로드 성공")
 						.build());
 	}
+
+	@GetMapping
+	public ResponseEntity<OotdResponse<List<PostGetResponse>>> list() {
+		List<PostGetResponse> response = postService.listTop20();
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(OotdResponse.<List<PostGetResponse>>builder()
+						.code(HttpStatus.OK.value())
+						.msg("피드 정보 반환")
+						.data(response)
+						.build());
+	}
+
 
 }
