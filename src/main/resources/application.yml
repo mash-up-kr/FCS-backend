@@ -46,10 +46,14 @@ spring:
       generate-ddl: false
       database-platform: org.hibernate.dialect.MySQL5Dialect
       hibernate:
-         ddl-auto: none
+         ddl-auto: update # 임시로 update로 해둠 추후 수정 필요
          
    datasource:
-      url: jdbc:mysql://localhost:3306/{url}?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://{url}:3306/ootd?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: {username}
       password: {password}
+
+server.tomcat.baseDir: ./log/
+server.tomcat.accesslog.pattern: "%{yyyy-MM-dd HH:mm:ss}t\t%s\t%r\t%{User-Agent}i\t%{Referer}i\t%a\t%b"
+server.tomcat.accesslog.enabled: true
