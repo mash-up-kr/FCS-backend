@@ -1,6 +1,7 @@
 package com.mashup.ootd.domain.post.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.entity.Post;
@@ -19,6 +20,7 @@ public class PostService {
 
 	private static final String DIRECTORY_NAME = "post";
 
+	@Transactional
 	public void create(PostCreateRequest dto) {
 		String url = fileUploader.upload(dto.getUploadFile(), DIRECTORY_NAME);
 
