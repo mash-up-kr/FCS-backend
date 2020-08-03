@@ -1,0 +1,44 @@
+= OOTD API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+
+[[Post]]
+== 파일 업로드
+
+=== Request
+
+include::{snippets}/upload/curl-request.adoc[]
+
+include::{snippets}/upload/http-request.adoc[]
+
+include::{snippets}/upload/httpie-request.adoc[]
+
+include::{snippets}/upload/request-parts.adoc[]
+
+include::{snippets}/upload/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/upload/http-response.adoc[]
+
+
+[[Style]]
+== 스타일 정보
+
+=== Request
+
+include::{snippets}/style-list/curl-request.adoc[]
+
+include::{snippets}/style-list/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/style-list/http-response.adoc[]
+
+include::{snippets}/style-list/response-fields.adoc[]
+
