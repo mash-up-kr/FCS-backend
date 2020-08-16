@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
+import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import com.mashup.ootd.domain.post.service.PostService;
 import com.mashup.ootd.web.message.OotdResponse;
@@ -24,14 +25,15 @@ public class PostController {
 	private final PostService postService;
 
 	@PostMapping
-	public ResponseEntity<OotdResponse<Void>> create(PostCreateRequest dto) {
-		postService.create(dto); 
+	public ResponseEntity<OotdResponse<PostCreateResponse>> create(PostCreateRequest dto) {
+		PostCreateResponse response = postService.create(dto); 
 
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(OotdResponse.<Void>builder()
+				.body(OotdResponse.<PostCreateResponse>builder()
 						.code(HttpStatus.CREATED.value())
 						.msg("업로드 성공")
+						.data(response)
 						.build());
 	}
 
