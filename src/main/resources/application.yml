@@ -21,11 +21,13 @@ cloud:
 spring:
    profiles: local
    jpa:
-      show-sql: true
       generate-ddl: true
       database-platform: org.hibernate.dialect.MySQL5Dialect
       hibernate:
          ddl-auto: update
+      properties:
+         hibernate:
+            format_sql: true
 
    datasource:
       url: jdbc:mysql://localhost:3306/ootd?cacheServerConfiguration=true&zeroDateTimeBehavior=convertToNull&autoReconnect=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false

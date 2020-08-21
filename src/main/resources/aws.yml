@@ -1,5 +1,5 @@
 cloud:
    aws:
       credentials:
-         accessKey: {awsAccessKey}
-         secretKey: {awsSecretKey}
+         accessKey: ${awsAccessKey}
+         secretKey: ${awsSecretKey}

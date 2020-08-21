@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.9.2'
 	id 'java'
 }
 
@@ -10,6 +11,10 @@ sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
+}
+
+ext { 
+	snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -31,8 +36,25 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	
+	testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.4.RELEASE'
+	
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.4.RELEASE'
 }
 
-test {
+test { 
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+asciidoctor { 
+	inputs.dir snippetsDir 
+	dependsOn test 
+}
+
+bootJar {
+	dependsOn asciidoctor 
+	from ("${asciidoctor.outputDir}/html5") { 
+		into 'static/docs'
+	}
 }
