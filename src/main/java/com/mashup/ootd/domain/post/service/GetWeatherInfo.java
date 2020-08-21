@@ -1,6 +1,5 @@
 package com.mashup.ootd.domain.post.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -123,20 +122,25 @@ public class GetWeatherInfo {
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
             JSONObject bigObj = new JSONObject(Objects.requireNonNull(resultMap.getBody()));
             JSONArray results = (JSONArray) bigObj.get("results");
-            JSONObject smallObj = (JSONObject) weatherObj.get(0);
-            String element = (String) smallObj.get("description");
-            result.put("description", element);
+            JSONObject smallObj = (JSONObject) results.get(0);
+            smallObj = (JSONObject) smallObj.get("region");
+            smallObj = (JSONObject) smallObj.get("area1");
+            String element = (String) smallObj.get("name");
+            result.put("do", element);
 
-            smallObj = (JSONObject)bigObj.get("main");
-            element = (String) smallObj.get("temp");
-            result.put("temp", Float.parseFloat(element));
+            smallObj = (JSONObject) smallObj.get("region");
+            smallObj = (JSONObject) smallObj.get("area2");
+            element = (String) smallObj.get("name");
+            result.put("si,gu", element);
 
-            smallObj = (JSONObject)bigObj.get("clouds");
-            element = (String) smallObj.get("all");
-            result.put("clouds", Integer.parseInt(element));
+            smallObj = (JSONObject) smallObj.get("region");
+            smallObj = (JSONObject) smallObj.get("area3");
+            element = (String) smallObj.get("name");
+            result.put("dong", element);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-    }
 
+        return result;
+    }
 }
