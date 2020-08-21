@@ -2,6 +2,7 @@ package com.mashup.ootd.web.controller.post;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class PostController {
 
 	@PostMapping
 	public ResponseEntity<OotdResponse<Void>> create(PostCreateRequest dto) {
-		postService.create(dto); 
+		postService.create(dto);
 
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -30,5 +31,4 @@ public class PostController {
 						.msg("업로드 성공")
 						.build());
 	}
-
 }
