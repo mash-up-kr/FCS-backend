@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -19,6 +21,7 @@ public class PostGetResponse {
 	private String weather;
 	private String temperature;
 	private String date;
+	private List<Long> StyleIds;
 
 	public PostGetResponse(Post entity) {
 		this.id = entity.getId();
@@ -28,6 +31,7 @@ public class PostGetResponse {
 		this.weather = entity.getWeather();
 		this.temperature = entity.getTemperature();
 		this.date = DateUtils.toDateStr(entity.getCreatedAt());
+		this.StyleIds = entity.getStyleIds();
 	}
 
 }
