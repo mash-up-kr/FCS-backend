@@ -25,14 +25,14 @@ import java.util.Objects;
 
 
 public class GetWeatherInfo {
-    public HashMap<String, Object> getCurrentWeatherInfo(@RequestParam("lat") int lat, @RequestParam("lon") int lon) {
+    public HashMap<String, Object> getCurrentWeatherInfo(@RequestParam("lat") float lat, @RequestParam("lon") float lon) {
         HashMap<String, Object> result = new HashMap<String, Object>();
         //String jsonInString = "";
         //StringBuilder urlBuilder = new StringBuilder();
         try {
         /*
             String apiURL = "api.openweathermap.org/data/2.5/weather?"
-            + "lat=" + lat + "lon=" + lon + "appid=b692c24a9d64e29901f2fa8c899d1b9f";
+            + "lat=" + lat + "lon=" + lon + "appid=";
             URL url = new URL(apiURL);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -106,7 +106,7 @@ public class GetWeatherInfo {
 
 
 
-    public HashMap<String, Object> getGeoInfo(@RequestParam("lat") int lat, @RequestParam("lon") int lon) {
+    public HashMap<String, Object> getGeoInfo(@RequestParam("lat") float lat, @RequestParam("lon") float lon) {
         HashMap<String, Object> result = new HashMap<String, Object>();
         try {
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();

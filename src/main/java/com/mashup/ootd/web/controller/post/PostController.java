@@ -25,9 +25,6 @@ public class PostController {
 	private final PostService postService;
 
 	@PostMapping
-	public ResponseEntity<OotdResponse<Void>> create(PostCreateRequest dto) {
-		postService.create(dto);
-
 	public ResponseEntity<OotdResponse<PostCreateResponse>> create(PostCreateRequest dto) {
 		PostCreateResponse response = postService.create(dto);
 
