@@ -8,7 +8,11 @@ import org.springframework.restdocs.operation.preprocess.OperationResponsePrepro
 public interface ApiDocumentUtils {
 	
 	static OperationRequestPreprocessor getDocumentRequest() {
-		return preprocessRequest(prettyPrint());
+		return preprocessRequest(
+				modifyUris()
+					.host("52.78.79.159")
+					.removePort(),
+				prettyPrint());
 	}
 	
 	static OperationResponsePreprocessor getDocumentResponse() {

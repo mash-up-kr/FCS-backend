@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,9 +16,13 @@ import javax.persistence.PreUpdate;
 
 import com.mashup.ootd.domain.style.domain.UserStyle;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
 @Entity
@@ -27,9 +32,11 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated
-	private Gender gender;
-	private Integer age;
+	private String uid;
+	@Enumerated(EnumType.STRING)
+	private AuthType authType;
+
+	private String nickname;
 
 	@OneToMany(mappedBy = "user")
 	private List<UserStyle> userStyles = new ArrayList<>();
@@ -47,6 +54,13 @@ public class User {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+
+	@Builder
+	public User(String authType, String uid, String nickname) {
+		this.authType = AuthType.valueOf(authType);
+		this.uid = uid;
+		this.nickname = nickname;
 	}
 
 }

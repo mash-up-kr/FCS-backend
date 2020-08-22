@@ -6,6 +6,33 @@
 :toclevels: 3
 :sectlinks:
 
+[[Exception]]
+== 예외
+
+=== NotFoundEntityException
+
+include::{snippets}/NotFoundEntityException/http-response.adoc[]
+
+include::{snippets}/NotFoundEntityException/response-fields.adoc[]
+
+
+[[User]]
+== 로그인
+
+=== Request
+
+include::{snippets}/user-signIn/http-request.adoc[]
+
+include::{snippets}/user-signIn/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/user-signIn/http-response.adoc[]
+
+include::{snippets}/user-signIn/response-headers.adoc[]
+
+==== 로그인 실패(회원이 아닌 경우)
+include::{snippets}/NotFoundEntityException/http-response.adoc[]
 
 [[Post]]
 == 파일 업로드
@@ -25,6 +52,8 @@ include::{snippets}/upload/request-parameters.adoc[]
 === Response
 
 include::{snippets}/upload/http-response.adoc[]
+
+include::{snippets}/upload/response-fields.adoc[]
 
 
 == 피드 정보

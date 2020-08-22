@@ -39,7 +39,7 @@ logging:
    level:
       org.hibernate: debug
       
-jwt.secret-key: OotdSecretKey
+jwt.secret-key: FCSOotdSecretKeyStarBucksCoffeeBeanStar
 
 ---
 
