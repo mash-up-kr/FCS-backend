@@ -1,6 +1,9 @@
 package com.mashup.ootd.domain.post.service;
 
 import com.mashup.ootd.domain.post.dto.PostGetResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +45,11 @@ public class PostService {
 				.map(PostGetResponse::new)
 				.collect(Collectors.toList());
 	}
+
+	public Page<Post> list()
+	{
+		return postRepository.findAllBYStyleIds(PageRequest.of(1,20, Sort.Direction.DESC, "StyleIds"));
+	}
+
 
 }
