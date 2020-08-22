@@ -3,6 +3,7 @@ package com.mashup.ootd.domain.post.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,5 +64,9 @@ public class Post {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+
+	public List<Long> getStyleIds() {
+		return postStyles.stream().map(PostStyle::getId).collect(Collectors.toList());
 	}
 }
