@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
+import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.service.UserService;
 import com.mashup.ootd.web.message.OotdResponse;
 
@@ -23,12 +24,28 @@ public class UserController {
 	private final UserService userService;
 	private final JwtService jwtService;
 	
+	@PostMapping("/sign-up")
+	public ResponseEntity<OotdResponse<Void>> signUp(@RequestBody SignUpRequest dto) {
+		userService.signUp(dto);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto.getUid()));
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.headers(headers)
+				.body(OotdResponse.<Void>builder()
+						.code(HttpStatus.OK.value())
+						.msg("회원가입 성공")
+						.build());
+	}
+	
 	@PostMapping("/sign-in")
 	public ResponseEntity<OotdResponse<Void>> signIn(@RequestBody SignInRequest dto) {
 		userService.signIn(dto);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto));
+		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto.getUid()));
 
 		return ResponseEntity
 				.status(HttpStatus.OK)

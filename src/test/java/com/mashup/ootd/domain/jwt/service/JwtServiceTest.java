@@ -23,10 +23,9 @@ public class JwtServiceTest {
 	void test_createUserJwtAndGet() {
 		// given
 		String uid = "1234";
-		SignInRequest request = new SignInRequest(uid, "KAKAO");
 
 		// when
-		String jws = jwtService.createUserJwt(request);
+		String jws = jwtService.createUserJwt(uid);
 		String jwsUid = (String) jwtService.getJwsClaims(jws).getBody().get("uid");
 
 		// then
@@ -47,10 +46,10 @@ public class JwtServiceTest {
 	@Test
 	void test_isUsable() {
 		// given
-		SignInRequest request = new SignInRequest("1234", "KAKAO");
+		String uid = "1234";
 
 		// when
-		String jws = jwtService.createUserJwt(request);
+		String jws = jwtService.createUserJwt(uid);
 
 		// then
 		assertThat(jwtService.isUsable(jws)).isTrue();

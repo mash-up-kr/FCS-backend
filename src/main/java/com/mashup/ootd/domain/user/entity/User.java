@@ -57,9 +57,9 @@ public class User {
 	}
 
 	@Builder
-	public User(String authType, String uid, String nickname) {
-		this.authType = AuthType.valueOf(authType);
+	public User(String uid, String authType, String nickname) {
 		this.uid = uid;
+		this.authType = AuthType.valueOf(authType);
 		this.nickname = nickname;
 	}
 

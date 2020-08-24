@@ -6,17 +6,25 @@
 :toclevels: 3
 :sectlinks:
 
-[[Exception]]
-== 예외
-
-=== NotFoundEntityException
-
-include::{snippets}/NotFoundEntityException/http-response.adoc[]
-
-include::{snippets}/NotFoundEntityException/response-fields.adoc[]
-
 
 [[User]]
+== 회원가입
+
+=== Request
+
+include::{snippets}/user-signUp/http-request.adoc[]
+
+include::{snippets}/user-signUp/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/user-signUp/http-response.adoc[]
+
+include::{snippets}/user-signUp/response-headers.adoc[] 
+
+==== 회원가입 실패(중복된 아이디)
+include::{snippets}/DuplicateException/http-response.adoc[]
+
 == 로그인
 
 === Request
@@ -86,3 +94,16 @@ include::{snippets}/style-list/http-response.adoc[]
 
 include::{snippets}/style-list/response-fields.adoc[]
 
+
+[[Exception]]
+== 예외
+
+=== NotFoundEntityException
+
+include::{snippets}/NotFoundEntityException/http-response.adoc[]
+
+=== DuplicateException
+
+include::{snippets}/DuplicateException/http-response.adoc[]
+
+include::{snippets}/NotFoundEntityException/response-fields.adoc[]
