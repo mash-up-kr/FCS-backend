@@ -25,38 +25,11 @@ import java.util.Objects;
 
 
 public class GetWeatherInfo {
-    public HashMap<String, Object> getCurrentWeatherInfo(@RequestParam("lat") float lat, @RequestParam("lon") float lon) {
+
+
+    public HashMap<String, Object> getCurrentWeatherInfo(@RequestParam("lat") double lat, @RequestParam("lon") double lon) {
         HashMap<String, Object> result = new HashMap<String, Object>();
-        //String jsonInString = "";
-        //StringBuilder urlBuilder = new StringBuilder();
         try {
-        /*
-            String apiURL = "api.openweathermap.org/data/2.5/weather?"
-            + "lat=" + lat + "lon=" + lon + "appid=";
-            URL url = new URL(apiURL);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            //urlConnection.setRequestProperty("Client-Id", clientId);
-            //urlConnection.setRequestProperty("Client-Secret", clientSecret);
-            int responseCode = urlConnection.getResponseCode();
-            BufferedReader br;
-            //이제 br에 데이터 받을 것. 근데 응답이 json 으로 오는데 이걸 이렇게 할수가 있나...?
-            if (responseCode == 200)
-                br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8));
-            else
-                br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(), StandardCharsets.UTF_8));
-
-            String line;
-            //real data 인 br을 읽어들여 분석.
-            while ((line = br.readLine()) != null) {
-                urlBuilder.append(line).append("\n");
-            }
-
-            br.close();
-            urlConnection.disconnect();
-
-            return urlBuilder;
-            */
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
             factory.setConnectTimeout(5000);
             factory.setReadTimeout(5000);
@@ -69,9 +42,11 @@ public class GetWeatherInfo {
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
             //우리가 필요한 정보는 없는 것 같아서 안넣었
-            //result.put("statusCode", resultMap.getStatusCodeValue());
-            //result.put("header", resultMap.getHeaders());
-            //result.put("body", resultMap.getBody());
+            /*
+            result.put("statusCode", resultMap.getStatusCodeValue());
+            result.put("header", resultMap.getHeaders());
+            result.put("body", resultMap.getBody());
+             */
 
             JSONObject bigObj = new JSONObject(Objects.requireNonNull(resultMap.getBody()));
             //String jString = bigObj.toJSONString();
@@ -106,7 +81,7 @@ public class GetWeatherInfo {
 
 
 
-    public HashMap<String, Object> getGeoInfo(@RequestParam("lat") float lat, @RequestParam("lon") float lon) {
+    public HashMap<String, Object> getGeoInfo(double lat, double lon) {
         HashMap<String, Object> result = new HashMap<String, Object>();
         try {
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
