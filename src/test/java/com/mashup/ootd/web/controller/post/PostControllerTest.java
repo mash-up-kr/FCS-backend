@@ -87,7 +87,7 @@ public class PostControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
 								fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
-								fieldWithPath("data.photo_url").type(JsonFieldType.STRING).description("사진 url")
+								fieldWithPath("data.photoUrl").type(JsonFieldType.STRING).description("사진 url")
 						)
 				));
 	}
@@ -133,7 +133,7 @@ public class PostControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
 								fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
-								fieldWithPath("data[].photo_url").type(JsonFieldType.STRING).description("사진 url"),
+								fieldWithPath("data[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
 								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("메시지 내용"),
 								fieldWithPath("data[].weather").type(JsonFieldType.STRING).description("날씨"),
 								fieldWithPath("data[].temperature").type(JsonFieldType.STRING).description("온도"),

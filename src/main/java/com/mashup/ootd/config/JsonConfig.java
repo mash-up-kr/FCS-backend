@@ -18,7 +18,6 @@ public class JsonConfig {
 	@Primary
 	public ObjectMapper objectMapper() {
 		return Jackson2ObjectMapperBuilder.json()
-				.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
 				.serializationInclusion(JsonInclude.Include.NON_NULL)
 				.build();
 	}
