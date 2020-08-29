@@ -1,4 +1,4 @@
-package com.mashup.ootd.domain.post.service;
+package com.mashup.ootd.domain.weathergeo.service;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,11 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

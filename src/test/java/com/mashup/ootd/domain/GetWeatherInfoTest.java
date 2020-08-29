@@ -1,7 +1,7 @@
 
 package com.mashup.ootd.domain;
 
-import com.mashup.ootd.domain.post.service.GetWeatherInfo;
+import com.mashup.ootd.domain.weathergeo.service.GetWeatherInfo;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
