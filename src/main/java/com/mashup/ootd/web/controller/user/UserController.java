@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
+import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.service.UserService;
 import com.mashup.ootd.web.message.OotdResponse;
@@ -41,8 +42,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/sign-in")
-	public ResponseEntity<OotdResponse<Void>> signIn(@RequestBody SignInRequest dto) {
-		userService.signIn(dto);
+	public ResponseEntity<OotdResponse<SignInResponse>> signIn(@RequestBody SignInRequest dto) {
+		SignInResponse response = userService.signIn(dto);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto.getUid()));
@@ -50,9 +51,10 @@ public class UserController {
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.headers(headers)
-				.body(OotdResponse.<Void>builder()
+				.body(OotdResponse.<SignInResponse>builder()
 						.code(HttpStatus.OK.value())
 						.msg("로그인 성공")
+						.data(response)
 						.build());
 	}
 

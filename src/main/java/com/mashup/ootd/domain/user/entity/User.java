@@ -3,6 +3,7 @@ package com.mashup.ootd.domain.user.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -61,6 +62,12 @@ public class User {
 		this.uid = uid;
 		this.authType = AuthType.valueOf(authType);
 		this.nickname = nickname;
+	}
+	
+	public List<Long> getStyleIds() {
+		return userStyles.stream()
+				.map(userStyle -> userStyle.getStyle().getId())
+				.collect(Collectors.toList());
 	}
 
 }

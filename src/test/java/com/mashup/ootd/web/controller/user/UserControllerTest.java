@@ -34,6 +34,7 @@ import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
+import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.service.UserService;
 
@@ -119,9 +120,11 @@ public class UserControllerTest {
 	void test_signIn() throws JsonProcessingException, Exception {
 		// given
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
-		
 		given(jwtService.createUserJwt(any())).willReturn(jws);
-
+		
+		SignInResponse response = new SignInResponse("오늘옷", Arrays.asList(1L, 2L, 3L));
+		given(userService.signIn(any())).willReturn(response);
+		
 		// when
 		SignInRequest dto = new SignInRequest("123", "KAKAO");
 		
@@ -142,6 +145,12 @@ public class UserControllerTest {
 						),
 						responseHeaders(
 								headerWithName("Authorization").description("JWT 토큰")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지"),
+								fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+								fieldWithPath("data.styleIds").type(JsonFieldType.ARRAY).description("스타일 정보")
 						)
 				));
 	}

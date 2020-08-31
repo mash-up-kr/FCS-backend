@@ -7,6 +7,7 @@ import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.style.service.UserStyleService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
+import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.User;
 import com.mashup.ootd.domain.user.repository.UserRepository;
@@ -31,9 +32,11 @@ public class UserService {
 		userStyleService.save(user, dto.getStyleIds());
 	}
 
-	public void signIn(SignInRequest dto) {
-		userRepository.findByUidAndAuthType(dto.getUid(), dto.getAuthType())
+	public SignInResponse signIn(SignInRequest dto) {
+		User user = userRepository.findByUidAndAuthType(dto.getUid(), dto.getAuthType())
 				.orElseThrow(NotFoundEntityException::new);
+		
+		return new SignInResponse(user.getNickname(), user.getStyleIds());
 	}
 
 }
