@@ -84,7 +84,7 @@ public class UserControllerTest {
 								fieldWithPath("styleIds").type(JsonFieldType.ARRAY).description("선택한 스타일 Id 목록")
 						),
 						responseHeaders(
-								headerWithName("Authorization").description("JWT 토큰")
+								headerWithName(UserController.ACCESS_TOKEN_HEADER_NAME).description("JWT 토큰")
 						)
 				));
 	}
@@ -144,7 +144,7 @@ public class UserControllerTest {
 								fieldWithPath("authType").type(JsonFieldType.STRING).description("OAuth 타입")
 						),
 						responseHeaders(
-								headerWithName("Authorization").description("JWT 토큰")
+								headerWithName(UserController.ACCESS_TOKEN_HEADER_NAME).description("JWT 토큰")
 						),
 						responseFields(
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),

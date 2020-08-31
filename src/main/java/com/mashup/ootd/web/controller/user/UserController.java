@@ -25,12 +25,14 @@ public class UserController {
 	private final UserService userService;
 	private final JwtService jwtService;
 	
+	public static final String ACCESS_TOKEN_HEADER_NAME = "Access-Token";
+	
 	@PostMapping("/sign-up")
 	public ResponseEntity<OotdResponse<Void>> signUp(@RequestBody SignUpRequest dto) {
 		userService.signUp(dto);
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto.getUid()));
+		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(dto.getUid()));
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
@@ -46,7 +48,7 @@ public class UserController {
 		SignInResponse response = userService.signIn(dto);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, jwtService.createUserJwt(dto.getUid()));
+		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(dto.getUid()));
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
