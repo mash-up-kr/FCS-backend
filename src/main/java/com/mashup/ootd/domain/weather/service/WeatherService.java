@@ -32,7 +32,7 @@ public class WeatherService {
             HttpHeaders header = new HttpHeaders(); //header? body?
             HttpEntity<?> entity = new HttpEntity<>(header);
             //원랜 dt= 를 호출해서 historical date 를 넣어줘야함. 지금 포스트는 무저건 현재 시각으로만 생성 가능하게 했으므로 후에 리팩토링
-            String apiURL = new StringBuilder().append("api.openweathermap.org/data/2.5/onecall?").append("lat=").append(lat).append("&lon=").append(lon).append("&exclude=minute,hourly,daily").append("appid=b692c24a9d64e29901f2fa8c899d1b9f").toString();
+            String apiURL = new StringBuilder().append("https://api.openweathermap.org/data/2.5/onecall?").append("lat=").append(lat).append("&lon=").append(lon).append("&exclude=minute,hourly,daily").append("&appid=b692c24a9d64e29901f2fa8c899d1b9f").toString();
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiURL).build();
 
             ResponseEntity<Map> postWeatherResponseEntity = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
