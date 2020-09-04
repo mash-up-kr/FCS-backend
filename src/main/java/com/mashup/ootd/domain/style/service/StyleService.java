@@ -22,5 +22,9 @@ public class StyleService {
 
 		return styles.stream().map(StyleResponse::of).collect(Collectors.toList());
 	}
-	
+
+	public List<Style> listByStyleIds(List<Long> styleIds) {
+		return styleRepository.findAllById(styleIds);
+	}
+
 }

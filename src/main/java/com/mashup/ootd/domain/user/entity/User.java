@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.domain.UserStyle;
 
 import lombok.AccessLevel;
@@ -39,7 +41,7 @@ public class User {
 
 	private String nickname;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserStyle> userStyles = new ArrayList<>();
 
 	private LocalDateTime createdAt;
@@ -62,6 +64,14 @@ public class User {
 		this.uid = uid;
 		this.authType = AuthType.valueOf(authType);
 		this.nickname = nickname;
+	}
+
+	public void addStyles(List<Style> styles) {
+		userStyles.addAll(
+				styles.stream()
+				.map(style -> UserStyle.of(this, style))
+				.collect(Collectors.toList())
+				);
 	}
 	
 	public List<Long> getStyleIds() {

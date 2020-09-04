@@ -1,18 +1,23 @@
 package com.mashup.ootd.web.controller.user;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.mashup.ootd.ApiDocumentUtils.getDocumentRequest;
+import static com.mashup.ootd.ApiDocumentUtils.getDocumentResponse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static java.util.stream.Collectors.*;
-import static org.mockito.BDDMockito.*;
-import static com.mashup.ootd.ApiDocumentUtils.*;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,10 +38,9 @@ import com.mashup.ootd.config.JsonConfig;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.jwt.service.JwtService;
+import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
-import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
-import com.mashup.ootd.domain.user.dto.UserResponse;
 import com.mashup.ootd.domain.user.entity.AuthType;
 import com.mashup.ootd.domain.user.entity.User;
 import com.mashup.ootd.domain.user.service.UserService;
@@ -65,7 +69,8 @@ public class UserControllerTest {
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
 		given(jwtService.createUserJwt(any())).willReturn(jws);
 		
-		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
+		User user = getMockUser();
+		
 		given(userService.signUp(any())).willReturn(user);
 		
 		// when
@@ -133,8 +138,7 @@ public class UserControllerTest {
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
 		given(jwtService.createUserJwt(any())).willReturn(jws);
 		
-		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
-		given(user.getStyleIds()).willReturn(Arrays.asList(1L, 2L));
+		User user = getMockUser();
 		given(userService.signIn(any())).willReturn(user);
 		
 		// when
@@ -191,5 +195,17 @@ public class UserControllerTest {
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("에러 메세지")
 						)
 				));
+	}
+	
+	private User getMockUser() {
+		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
+		
+		List<Style> styles = new ArrayList<>();
+		styles.add(Style.builder().id(1L).build());
+		styles.add(Style.builder().id(2L).build());
+		styles.add(Style.builder().id(3L).build());
+		user.addStyles(styles);
+		
+		return user;
 	}
 }

@@ -1,10 +1,14 @@
 package com.mashup.ootd.domain.user.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
+import com.mashup.ootd.domain.style.domain.Style;
+import com.mashup.ootd.domain.style.service.StyleService;
 import com.mashup.ootd.domain.style.service.UserStyleService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -18,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final UserStyleService userStyleService;
+	private final StyleService styleService;
 
 	@Transactional
 	public User signUp(SignUpRequest dto) {
@@ -26,10 +30,12 @@ public class UserService {
 			throw new DuplicateException();
 
 		User user = dto.toEntity();
+		
+		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
+		user.addStyles(styles);
+		
 		userRepository.save(user);
-
-		userStyleService.save(user, dto.getStyleIds());
-
+		
 		return user;
 	}
 
