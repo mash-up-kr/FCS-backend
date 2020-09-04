@@ -39,7 +39,7 @@ public class User {
 	private String nickname;
 
 	@OneToMany(mappedBy = "user")
-	private List<UserStyle> userStyles = new ArrayList<>();
+	private final List<UserStyle> userStyles = new ArrayList<>();
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

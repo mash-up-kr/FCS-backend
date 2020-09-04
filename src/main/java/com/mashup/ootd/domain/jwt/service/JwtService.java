@@ -1,6 +1,7 @@
 package com.mashup.ootd.domain.jwt.service;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,12 +95,7 @@ public class JwtService {
 	
 	private byte[] generateKey() {
 		byte[] key = null;
-		try {
-			key = secretKey.getBytes("UTF-8");
-			
-		} catch (UnsupportedEncodingException e) {
-			log.debug("generate key fail : {} ", e);
-		}
+		key = secretKey.getBytes(StandardCharsets.UTF_8);
 
 		return key;
 	}

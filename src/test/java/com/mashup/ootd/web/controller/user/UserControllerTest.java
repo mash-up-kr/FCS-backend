@@ -56,7 +56,7 @@ public class UserControllerTest {
 	private JwtService jwtService;
 	
 	@Test
-	void test_SignUp() throws JsonProcessingException, Exception {
+	void test_SignUp() throws Exception {
 		// given
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
 
@@ -89,7 +89,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	void test_signUp_duplicateException() throws JsonProcessingException, Exception {
+	void test_signUp_duplicateException() throws Exception {
 		// given
 		doThrow(new DuplicateException()).when(userService).signUp(any());
 		
@@ -116,7 +116,7 @@ public class UserControllerTest {
 	}
 
 	@Test
-	void test_signIn() throws JsonProcessingException, Exception {
+	void test_signIn() throws Exception {
 		// given
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
 		
@@ -147,7 +147,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	void test_signIn_notFoundEntityException() throws JsonProcessingException, Exception {
+	void test_signIn_notFoundEntityException() throws Exception {
 		// given
 		doThrow(new NotFoundEntityException()).when(userService).signIn(any());
 		

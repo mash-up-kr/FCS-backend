@@ -10,8 +10,8 @@ import lombok.Getter;
 @Getter
 public class StyleResponse {
 	
-	private Long id;
-	private String name;
+	private final Long id;
+	private final String name;
 	
 	public static StyleResponse of(Style style) {
 		

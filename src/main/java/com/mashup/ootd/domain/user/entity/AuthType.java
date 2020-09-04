@@ -11,6 +11,6 @@ public enum AuthType {
 	GOOGLE("구글"),
 	APPLE("애플");
 
-	private String desc;
+	private final String desc;
 
 }

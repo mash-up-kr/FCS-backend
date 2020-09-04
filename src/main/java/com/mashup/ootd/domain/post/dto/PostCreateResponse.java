@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class PostCreateResponse {
 
-	private Long id;
-	private String photoUrl;
+	private final Long id;
+	private final String photoUrl;
 
 	public PostCreateResponse(Long id, String photoUrl) {
 		this.id = id;

@@ -47,14 +47,14 @@ public class PostControllerTest {
 
 	@MockBean
 	private PostService postService;
-	
+
 	@Test
 	public void test_create() throws Exception {
-		
+
 		// given
 		PostCreateResponse response = new PostCreateResponse(1L, ".../image.png");
 		given(postService.create(any())).willReturn(response);
-		
+
 		// when
 		ResultActions result = mockMvc.perform(fileUpload("/api/posts")
 				.file("uploadFile", "image".getBytes())
@@ -74,7 +74,7 @@ public class PostControllerTest {
 						getDocumentResponse(),
 						requestParts(
 								partWithName("uploadFile").description("업로드 할 이미지")
-						), 
+						),
 						requestParameters(
 								parameterWithName("userId").description("유저 id 입력"),
 								parameterWithName("message").description("주소 입력"),
@@ -87,14 +87,14 @@ public class PostControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
 								fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
-								fieldWithPath("data.photoUrl").type(JsonFieldType.STRING).description("사진 url")
+								fieldWithPath("data.photo_url").type(JsonFieldType.STRING).description("사진 url")
 						)
 				));
 	}
-	
+
 	@Test
 	void test_list() throws Exception {
-		
+
 		// given
 		Post post1 = Post.builder()
 				.id(1L)
@@ -104,7 +104,7 @@ public class PostControllerTest {
 				.temperature("30")
 				.createdAt(LocalDateTime.of(2020, 8, 16, 12, 0, 0))
 				.build();
-		
+
 		Post post2 = Post.builder()
 				.id(2L)
 				.photoUrl(".../image2.png")
@@ -113,17 +113,17 @@ public class PostControllerTest {
 				.temperature("0")
 				.createdAt(LocalDateTime.of(2021, 1, 16, 12, 0, 0))
 				.build();
-		
+
 		List<Post> posts = Arrays.asList(post1, post2);
 		List<PostGetResponse> response = posts.stream().map(PostGetResponse::new).collect(toList());
-		
+
 		given(postService.listTop20()).willReturn(response);
-		
+
 		// when
 		ResultActions result = mockMvc.perform(get("/api/posts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
-		
+
 		// then
 		result.andExpect(status().isOk())
 				.andDo(document("post-list",
@@ -133,7 +133,7 @@ public class PostControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
 								fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
-								fieldWithPath("data[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
+								fieldWithPath("data[].photo_url").type(JsonFieldType.STRING).description("사진 url"),
 								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("메시지 내용"),
 								fieldWithPath("data[].weather").type(JsonFieldType.STRING).description("날씨"),
 								fieldWithPath("data[].temperature").type(JsonFieldType.STRING).description("온도"),

@@ -9,9 +9,9 @@ public class BaseException extends RuntimeException{
 	
 	private static final long serialVersionUID = -839257670118545983L;
 	
-	private HttpStatus status;
-	private int code;
-    private String msg;
+	private final HttpStatus status;
+	private final int code;
+    private final String msg;
     
     public BaseException(HttpStatus status, int code, String msg) {
         super(msg);

@@ -4,20 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 
 import com.mashup.ootd.domain.style.domain.PostStyle;
 import com.mashup.ootd.domain.user.entity.User;
 
+import com.mashup.ootd.domain.weather.domain.PostWeather;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +34,7 @@ public class Post {
 	private User user;
 
 	@OneToMany(mappedBy = "post")
-	private List<PostStyle> postStyles = new ArrayList<>();
+	private final List<PostStyle> postStyles = new ArrayList<>();
 
 	private String photoUrl;
 	private String message;
@@ -53,6 +45,7 @@ public class Post {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
+
 	@PrePersist
 	private void onInit() {
 		LocalDateTime now = LocalDateTime.now();
@@ -60,8 +53,17 @@ public class Post {
 		this.updatedAt = now;
 	}
 
+
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
+
+	/*
+	private void setPostWeather(PostWeather postweather) {
+	}
+
+	private void setLocation(Locaton location) {
+	}
+	 */
 }

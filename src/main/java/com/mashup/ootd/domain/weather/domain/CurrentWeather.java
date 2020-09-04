@@ -1,15 +1,17 @@
-package com.mashup.ootd.domain.weathergeo.domain;
+package com.mashup.ootd.domain.weather.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
 
 @AllArgsConstructor
 @Getter
-public class CurrentWeatherGeo {
+@Setter
+public class CurrentWeather {
     private String description;
     private Long apparentTemp;
-    private Long windChillTemp;
     private Long maxTemp;
     private Long minTemp;
-    private String location;
 }
