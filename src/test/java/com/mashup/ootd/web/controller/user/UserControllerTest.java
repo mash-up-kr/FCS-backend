@@ -36,6 +36,9 @@ import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
+import com.mashup.ootd.domain.user.dto.UserResponse;
+import com.mashup.ootd.domain.user.entity.AuthType;
+import com.mashup.ootd.domain.user.entity.User;
 import com.mashup.ootd.domain.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
@@ -60,8 +63,10 @@ public class UserControllerTest {
 	void test_SignUp() throws JsonProcessingException, Exception {
 		// given
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
-
 		given(jwtService.createUserJwt(any())).willReturn(jws);
+		
+		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
+		given(userService.signUp(any())).willReturn(user);
 		
 		// when
 		SignUpRequest dto = new SignUpRequest("123", "KAKAO", "닉네임", Arrays.asList(1L, 2L, 3L));
@@ -85,6 +90,12 @@ public class UserControllerTest {
 						),
 						responseHeaders(
 								headerWithName(UserController.ACCESS_TOKEN_HEADER_NAME).description("JWT 토큰")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지"),
+								fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+								fieldWithPath("data.styleIds").type(JsonFieldType.ARRAY).description("스타일 정보")
 						)
 				));
 	}
@@ -122,8 +133,9 @@ public class UserControllerTest {
 		String jws = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
 		given(jwtService.createUserJwt(any())).willReturn(jws);
 		
-		SignInResponse response = new SignInResponse("오늘옷", Arrays.asList(1L, 2L, 3L));
-		given(userService.signIn(any())).willReturn(response);
+		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
+		given(user.getStyleIds()).willReturn(Arrays.asList(1L, 2L));
+		given(userService.signIn(any())).willReturn(user);
 		
 		// when
 		SignInRequest dto = new SignInRequest("123", "KAKAO");

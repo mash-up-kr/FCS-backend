@@ -33,11 +33,11 @@ public class JwtService {
 		this.secretKey = secretKey;
 	}
 	
-	public String createUserJwt(String uid) {
+	public String createUserJwt(Long id) {
 		String subject = "userAccessToken";
 		
 		Map<String, Object> payload = new HashMap<>();
-		payload.put("uid", uid);
+		payload.put("id", id);
 		
 		return create(subject, payload);
 	}

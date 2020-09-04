@@ -22,14 +22,14 @@ public class JwtServiceTest {
 	@Test
 	void test_createUserJwtAndGet() {
 		// given
-		String uid = "1234";
+		Long id = 1L;
 
 		// when
-		String jws = jwtService.createUserJwt(uid);
-		String jwsUid = (String) jwtService.getJwsClaims(jws).getBody().get("uid");
+		String jws = jwtService.createUserJwt(id);
+		Long jwsId = new Long((int)jwtService.getJwsClaims(jws).getBody().get("id"));
 
 		// then
-		assertThat(jwsUid).isEqualTo(uid);
+		assertThat(jwsId).isEqualTo(id);
 	}
 
 	@Test
@@ -46,10 +46,10 @@ public class JwtServiceTest {
 	@Test
 	void test_isUsable() {
 		// given
-		String uid = "1234";
-
+		Long id = 1L;
+		
 		// when
-		String jws = jwtService.createUserJwt(uid);
+		String jws = jwtService.createUserJwt(id);
 
 		// then
 		assertThat(jwtService.isUsable(jws)).isTrue();

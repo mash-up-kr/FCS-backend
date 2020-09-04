@@ -24,13 +24,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.mashup.ootd.config.JsonConfig;
-import com.mashup.ootd.domain.post.dto.PostCreateRequest;
+import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import com.mashup.ootd.domain.post.entity.Post;
@@ -48,10 +47,15 @@ public class PostControllerTest {
 	@MockBean
 	private PostService postService;
 	
+	@MockBean
+	private JwtService jwtService;
+	
 	@Test
 	public void test_create() throws Exception {
 		
 		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
 		PostCreateResponse response = new PostCreateResponse(1L, ".../image.png");
 		given(postService.create(any())).willReturn(response);
 		
@@ -96,10 +100,13 @@ public class PostControllerTest {
 	void test_list() throws Exception {
 		
 		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
 		Post post1 = Post.builder()
 				.id(1L)
 				.photoUrl(".../image.png")
 				.message("업로드 메세지")
+				.address("서울")
 				.weather("hot")
 				.temperature("30")
 				.createdAt(LocalDateTime.of(2020, 8, 16, 12, 0, 0))
@@ -109,6 +116,7 @@ public class PostControllerTest {
 				.id(2L)
 				.photoUrl(".../image2.png")
 				.message("업로드 메세지2")
+				.address("부산")
 				.weather("cold")
 				.temperature("0")
 				.createdAt(LocalDateTime.of(2021, 1, 16, 12, 0, 0))
@@ -135,6 +143,7 @@ public class PostControllerTest {
 								fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
 								fieldWithPath("data[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
 								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("메시지 내용"),
+								fieldWithPath("data[].address").type(JsonFieldType.STRING).description("위치"),
 								fieldWithPath("data[].weather").type(JsonFieldType.STRING).description("날씨"),
 								fieldWithPath("data[].temperature").type(JsonFieldType.STRING).description("온도"),
 								fieldWithPath("data[].date").type(JsonFieldType.STRING).description("업로드 날짜")

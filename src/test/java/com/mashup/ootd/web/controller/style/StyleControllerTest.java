@@ -1,5 +1,7 @@
 package com.mashup.ootd.web.controller.style;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.mashup.ootd.config.JsonConfig;
+import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.dto.StyleResponse;
 import com.mashup.ootd.domain.style.service.StyleService;
@@ -42,11 +46,16 @@ public class StyleControllerTest {
 	
 	@MockBean
 	private StyleService styleService;
+	
+	@MockBean
+	private JwtService jwtService;
 
 	@Test
 	public void test_list() throws Exception {
 
 		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
 		Style style1 = Style.builder()
 				.id(1L)
 				.name("댄디")

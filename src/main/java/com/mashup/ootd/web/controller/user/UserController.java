@@ -12,6 +12,8 @@ import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
+import com.mashup.ootd.domain.user.dto.UserResponse;
+import com.mashup.ootd.domain.user.entity.User;
 import com.mashup.ootd.domain.user.service.UserService;
 import com.mashup.ootd.web.message.OotdResponse;
 
@@ -28,35 +30,36 @@ public class UserController {
 	public static final String ACCESS_TOKEN_HEADER_NAME = "Access-Token";
 	
 	@PostMapping("/sign-up")
-	public ResponseEntity<OotdResponse<Void>> signUp(@RequestBody SignUpRequest dto) {
-		userService.signUp(dto);
+	public ResponseEntity<OotdResponse<UserResponse>> signUp(@RequestBody SignUpRequest dto) {
+		User user = userService.signUp(dto);
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(dto.getUid()));
+		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(user.getId()));
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.headers(headers)
-				.body(OotdResponse.<Void>builder()
+				.body(OotdResponse.<UserResponse>builder()
 						.code(HttpStatus.OK.value())
 						.msg("회원가입 성공")
+						.data(new UserResponse(user))
 						.build());
 	}
 	
 	@PostMapping("/sign-in")
-	public ResponseEntity<OotdResponse<SignInResponse>> signIn(@RequestBody SignInRequest dto) {
-		SignInResponse response = userService.signIn(dto);
-
+	public ResponseEntity<OotdResponse<UserResponse>> signIn(@RequestBody SignInRequest dto) {
+		User user = userService.signIn(dto);
+		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(dto.getUid()));
+		headers.add(ACCESS_TOKEN_HEADER_NAME, jwtService.createUserJwt(user.getId()));
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.headers(headers)
-				.body(OotdResponse.<SignInResponse>builder()
+				.body(OotdResponse.<UserResponse>builder()
 						.code(HttpStatus.OK.value())
 						.msg("로그인 성공")
-						.data(response)
+						.data(new UserResponse(user))
 						.build());
 	}
 
