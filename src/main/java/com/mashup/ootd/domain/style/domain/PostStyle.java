@@ -3,6 +3,7 @@ package com.mashup.ootd.domain.style.domain;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class PostStyle {
 	@JoinColumn(name = "post_id")
 	private Post post;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "style_id")
 	private Style style;
 
@@ -55,7 +56,7 @@ public class PostStyle {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
-	public static PostStyle create(Post post, Style style) {
+	public static PostStyle of(Post post, Style style) {
 		return PostStyle.builder()
 				.post(post)
 				.style(style)

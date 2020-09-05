@@ -1,9 +1,12 @@
 package com.mashup.ootd.domain.post.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +19,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import com.mashup.ootd.domain.style.domain.PostStyle;
+import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.entity.User;
 
 import lombok.AccessLevel;
@@ -30,7 +34,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 @Getter
 @Entity
-@Builder
 public class Post {
 
 	@Id
@@ -41,14 +44,16 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<PostStyle> postStyles = new ArrayList<>();
 
 	private String photoUrl;
+	
 	private String message;
+	private LocalDate date;
 	private String address;
 	private String weather;
-	private String temperature;
+	private Integer temperature;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -63,5 +68,29 @@ public class Post {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+
+	@Builder
+	public Post(String photoUrl, String message, LocalDate date, String address, String weather, Integer temperature) {
+		this.photoUrl = photoUrl;
+		this.message = message;
+		this.date = date;
+		this.address = address;
+		this.weather = weather;
+		this.temperature = temperature;
+	}
+	
+	public void addStyles(List<Style> styles) {
+		postStyles.addAll(
+				styles.stream()
+				.map(style -> PostStyle.of(this, style))
+				.collect(Collectors.toList())
+				);
+	}
+	
+	public List<Long> getStyleIds() {
+		return postStyles.stream()
+				.map(userStyle -> userStyle.getStyle().getId())
+				.collect(Collectors.toList());
 	}
 }

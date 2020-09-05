@@ -62,11 +62,11 @@ public class PostControllerTest {
 		// when
 		ResultActions result = mockMvc.perform(fileUpload("/api/posts")
 				.file("uploadFile", "image".getBytes())
-				.param("userId", "1")
 				.param("message", "메세지")
+				.param("date", "2020-09-05")
 				.param("address", "주소")
 				.param("weather", "날씨")
-				.param("temperature", "온도")
+				.param("temperature", "20")
 				.param("styleIds", "1,2,3"))
 				.andExpect(status().isCreated());
 
@@ -80,8 +80,8 @@ public class PostControllerTest {
 								partWithName("uploadFile").description("업로드 할 이미지")
 						), 
 						requestParameters(
-								parameterWithName("userId").description("유저 id 입력"),
-								parameterWithName("message").description("주소 입력"),
+								parameterWithName("message").description("피드 문구 입력"),
+								parameterWithName("date").description("피드 업로드 설정 날짜"),
 								parameterWithName("address").description("주소 입력"),
 								parameterWithName("weather").description("날씨 입력"),
 								parameterWithName("temperature").description("온도 입력"),
@@ -102,29 +102,30 @@ public class PostControllerTest {
 		// given
 		given(jwtService.isUsable(any())).willReturn(true);
 		
-		Post post1 = Post.builder()
+		PostGetResponse response1 = PostGetResponse.builder()
 				.id(1L)
 				.photoUrl(".../image.png")
-				.message("업로드 메세지")
+				.message("업로드 메시지")
 				.address("서울")
 				.weather("hot")
-				.temperature("30")
-				.createdAt(LocalDateTime.of(2020, 8, 16, 12, 0, 0))
+				.temperature(30)
+				.styleIds(Arrays.asList(1L, 2L, 3L))
+				.date("20년 8월 16일 일요일")
 				.build();
 		
-		Post post2 = Post.builder()
-				.id(2L)
+		PostGetResponse response2 = PostGetResponse.builder()
+				.id(1L)
 				.photoUrl(".../image2.png")
-				.message("업로드 메세지2")
+				.message("업로드 메시지2")
 				.address("부산")
 				.weather("cold")
-				.temperature("0")
-				.createdAt(LocalDateTime.of(2021, 1, 16, 12, 0, 0))
+				.temperature(10)
+				.styleIds(Arrays.asList(1L, 2L, 3L))
+				.date("21년 1월 16일 일요일")
 				.build();
 		
-		List<Post> posts = Arrays.asList(post1, post2);
-		List<PostGetResponse> response = posts.stream().map(PostGetResponse::new).collect(toList());
-		
+		List<PostGetResponse> response = Arrays.asList(response1, response2);
+
 		given(postService.listTop20()).willReturn(response);
 		
 		// when
@@ -142,10 +143,11 @@ public class PostControllerTest {
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
 								fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
 								fieldWithPath("data[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
-								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("메시지 내용"),
+								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("피드 문구 내용"),
 								fieldWithPath("data[].address").type(JsonFieldType.STRING).description("위치"),
 								fieldWithPath("data[].weather").type(JsonFieldType.STRING).description("날씨"),
-								fieldWithPath("data[].temperature").type(JsonFieldType.STRING).description("온도"),
+								fieldWithPath("data[].temperature").type(JsonFieldType.NUMBER).description("온도"),
+								fieldWithPath("data[].styleIds").type(JsonFieldType.ARRAY).description("스타일 정보"),
 								fieldWithPath("data[].date").type(JsonFieldType.STRING).description("업로드 날짜")
 						)
 				));
