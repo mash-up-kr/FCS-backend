@@ -72,8 +72,6 @@ include::{snippets}/upload/response-fields.adoc[]
 
 === Request
 
-include::{snippets}/post-list/curl-request.adoc[]
-
 include::{snippets}/post-list/http-request.adoc[]
 
 === Response
@@ -87,8 +85,6 @@ include::{snippets}/post-list/response-fields.adoc[]
 == 스타일 정보
 
 === Request
-
-include::{snippets}/style-list/curl-request.adoc[]
 
 include::{snippets}/style-list/http-request.adoc[]
 

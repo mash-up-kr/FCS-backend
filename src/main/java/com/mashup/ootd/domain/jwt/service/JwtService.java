@@ -88,8 +88,8 @@ public class JwtService {
 		return jwsClaims.getBody().get(key).toString();
 	}
 	
-	public String getUid() {
-		return getValue("uid");
+	public Long getId() {
+		return Long.parseLong(getValue("id"));
 	}
 	
 	private byte[] generateKey() {

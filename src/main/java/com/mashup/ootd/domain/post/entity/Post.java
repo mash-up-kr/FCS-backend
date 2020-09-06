@@ -80,6 +80,10 @@ public class Post {
 		this.temperature = temperature;
 	}
 	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public void addStyles(List<Style> styles) {
 		postStyles.addAll(
 				styles.stream()
@@ -90,7 +94,7 @@ public class Post {
 	
 	public List<Long> getStyleIds() {
 		return postStyles.stream()
-				.map(userStyle -> userStyle.getStyle().getId())
+				.map(postStyle -> postStyle.getStyle().getId())
 				.collect(Collectors.toList());
 	}
 }

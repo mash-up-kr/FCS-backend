@@ -34,6 +34,7 @@ import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.dto.StyleResponse;
 import com.mashup.ootd.domain.style.service.StyleService;
+import com.mashup.ootd.domain.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(StyleController.class)
@@ -49,6 +50,9 @@ public class StyleControllerTest {
 	
 	@MockBean
 	private JwtService jwtService;
+	
+	@MockBean
+	private UserService userService;
 
 	@Test
 	public void test_list() throws Exception {

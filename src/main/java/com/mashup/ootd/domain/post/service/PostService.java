@@ -13,6 +13,7 @@ import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.repository.PostRepository;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.service.StyleService;
+import com.mashup.ootd.domain.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,13 +28,14 @@ public class PostService {
 	private static final String DIRECTORY_NAME = "post";
 
 	@Transactional
-	public PostCreateResponse create(PostCreateRequest dto) {
+	public PostCreateResponse create(User user, PostCreateRequest dto) {
+
 		String url = fileUploader.upload(dto.getUploadFile(), DIRECTORY_NAME);
 
 		Post post = dto.toEntity(url);
+		post.setUser(user);
 		
 		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
-
 		post.addStyles(styles);
 
 		postRepository.save(post);

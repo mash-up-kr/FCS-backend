@@ -13,6 +13,7 @@ import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import com.mashup.ootd.domain.post.service.PostService;
+import com.mashup.ootd.domain.user.entity.User;
 import com.mashup.ootd.web.message.OotdResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class PostController {
 	private final PostService postService;
 
 	@PostMapping
-	public ResponseEntity<OotdResponse<PostCreateResponse>> create(PostCreateRequest dto) {
-		PostCreateResponse response = postService.create(dto); 
+	public ResponseEntity<OotdResponse<PostCreateResponse>> create(User user, PostCreateRequest dto) {
+		PostCreateResponse response = postService.create(user, dto); 
 
 		return ResponseEntity
 				.status(HttpStatus.CREATED)

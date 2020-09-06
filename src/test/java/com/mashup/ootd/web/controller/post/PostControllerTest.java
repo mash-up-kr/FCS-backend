@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -34,6 +35,7 @@ import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostGetResponse;
 import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.service.PostService;
+import com.mashup.ootd.domain.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PostController.class)
@@ -50,6 +52,9 @@ public class PostControllerTest {
 	@MockBean
 	private JwtService jwtService;
 	
+	@MockBean
+	private UserService userService;
+	
 	@Test
 	public void test_create() throws Exception {
 		
@@ -57,11 +62,13 @@ public class PostControllerTest {
 		given(jwtService.isUsable(any())).willReturn(true);
 		
 		PostCreateResponse response = new PostCreateResponse(1L, ".../image.png");
-		given(postService.create(any())).willReturn(response);
+		given(postService.create(any(), any())).willReturn(response);
 		
 		// when
 		ResultActions result = mockMvc.perform(fileUpload("/api/posts")
 				.file("uploadFile", "image".getBytes())
+				.header(HttpHeaders.AUTHORIZATION,
+						"eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y")
 				.param("message", "메세지")
 				.param("date", "2020-09-05")
 				.param("address", "주소")
@@ -130,6 +137,8 @@ public class PostControllerTest {
 		
 		// when
 		ResultActions result = mockMvc.perform(get("/api/posts")
+				.header(HttpHeaders.AUTHORIZATION,
+						"eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
 		
