@@ -1,5 +1,6 @@
 package com.mashup.ootd.domain;
 
+import com.mashup.ootd.domain.weather.domain.PostWeather;
 import com.mashup.ootd.domain.weather.service.WeatherService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +15,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @RestClientTest(WeatherService.class)
 public class WeatherServiceTest {
     @Test
-    public void test() {
+    public void getPostWeatherInfoTest() {
         WeatherService weatherService = new WeatherService();
-        String result = weatherService.getPostWeatherInfo("40.12", "-96.66");
+        PostWeather result = weatherService.getPostWeatherInfo("40.12", "-96.66");
         System.out.println(result);
     }
 }

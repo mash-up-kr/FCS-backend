@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 public class CurrentWeather {
     private String description;
     private Long apparentTemp;
+    private Long windChillTemp;
     private Long maxTemp;
     private Long minTemp;
 }

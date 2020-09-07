@@ -29,7 +29,7 @@ public class PostService {
 	private static final String DIRECTORY_NAME = "post";
 
 	//for test
-	public String postWeather;
+	public PostWeather postWeather;
 
 	@Transactional
 	public PostCreateResponse create(PostCreateRequest dto) {
