@@ -6,6 +6,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static java.util.stream.Collectors.*;
 import static org.mockito.BDDMockito.*;
 
@@ -32,7 +33,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.mashup.ootd.config.JsonConfig;
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
-import com.mashup.ootd.domain.post.dto.PostGetResponse;
+import com.mashup.ootd.domain.post.dto.PostListResponse;
+import com.mashup.ootd.domain.post.dto.PostResponse;
 import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.service.PostService;
 import com.mashup.ootd.domain.user.service.UserService;
@@ -83,6 +85,9 @@ public class PostControllerTest {
 				.andDo(document("upload",
 						getDocumentRequest(),
 						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
 						requestParts(
 								partWithName("uploadFile").description("업로드 할 이미지")
 						), 
@@ -109,7 +114,7 @@ public class PostControllerTest {
 		// given
 		given(jwtService.isUsable(any())).willReturn(true);
 		
-		PostGetResponse response1 = PostGetResponse.builder()
+		PostResponse post1 = PostResponse.builder()
 				.id(1L)
 				.photoUrl(".../image.png")
 				.message("업로드 메시지")
@@ -118,9 +123,10 @@ public class PostControllerTest {
 				.temperature(30)
 				.styleIds(Arrays.asList(1L, 2L, 3L))
 				.date("20년 8월 16일 일요일")
+				.nickname("유저1")
 				.build();
 		
-		PostGetResponse response2 = PostGetResponse.builder()
+		PostResponse post2 = PostResponse.builder()
 				.id(1L)
 				.photoUrl(".../image2.png")
 				.message("업로드 메시지2")
@@ -129,14 +135,16 @@ public class PostControllerTest {
 				.temperature(10)
 				.styleIds(Arrays.asList(1L, 2L, 3L))
 				.date("21년 1월 16일 일요일")
+				.nickname("유저2")
 				.build();
 		
-		List<PostGetResponse> response = Arrays.asList(response1, response2);
-
-		given(postService.listTop20()).willReturn(response);
+		List<PostResponse> posts = Arrays.asList(post1, post2);
+		
+		PostListResponse response = PostListResponse.of(posts, true);
+		given(postService.list(any())).willReturn(response);
 		
 		// when
-		ResultActions result = mockMvc.perform(get("/api/posts")
+		ResultActions result = mockMvc.perform(get("/api/posts?styleIds=1,2&weather=CLEAR&minTemp=21&maxTemp=23&lastPostId=10")
 				.header(HttpHeaders.AUTHORIZATION,
 						"eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -147,17 +155,29 @@ public class PostControllerTest {
 				.andDo(document("post-list",
 						getDocumentRequest(),
 						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
+						requestParameters(
+								parameterWithName("styleIds").description("스타일 Id 목록"),
+								parameterWithName("weather").description("날씨"),
+								parameterWithName("minTemp").description("최소 온도"),
+								parameterWithName("maxTemp").description("최대 온도"),
+								parameterWithName("lastPostId").description("마지막 피드 번호(첫 페이지에선 해당 파라미터 없이 요청)")
+						),
 						responseFields(
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
-								fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
-								fieldWithPath("data[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
-								fieldWithPath("data[].message").type(JsonFieldType.STRING).description("피드 문구 내용"),
-								fieldWithPath("data[].address").type(JsonFieldType.STRING).description("위치"),
-								fieldWithPath("data[].weather").type(JsonFieldType.STRING).description("날씨"),
-								fieldWithPath("data[].temperature").type(JsonFieldType.NUMBER).description("온도"),
-								fieldWithPath("data[].styleIds").type(JsonFieldType.ARRAY).description("스타일 정보"),
-								fieldWithPath("data[].date").type(JsonFieldType.STRING).description("업로드 날짜")
+								fieldWithPath("data.posts[].id").type(JsonFieldType.NUMBER).description("포스트 고유 id"),
+								fieldWithPath("data.posts[].photoUrl").type(JsonFieldType.STRING).description("사진 url"),
+								fieldWithPath("data.posts[].message").type(JsonFieldType.STRING).description("피드 문구 내용"),
+								fieldWithPath("data.posts[].address").type(JsonFieldType.STRING).description("위치"),
+								fieldWithPath("data.posts[].weather").type(JsonFieldType.STRING).description("날씨"),
+								fieldWithPath("data.posts[].temperature").type(JsonFieldType.NUMBER).description("온도"),
+								fieldWithPath("data.posts[].styleIds").type(JsonFieldType.ARRAY).description("스타일 정보"),
+								fieldWithPath("data.posts[].date").type(JsonFieldType.STRING).description("업로드 날짜"),
+								fieldWithPath("data.posts[].nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
+								fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 유무")
 						)
 				));
 	}

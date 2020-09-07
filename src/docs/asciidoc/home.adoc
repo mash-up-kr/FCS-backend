@@ -22,7 +22,7 @@ include::{snippets}/user-signUp/http-response.adoc[]
 
 include::{snippets}/user-signUp/response-headers.adoc[]
 
-include::{snippets}/user-signIn/response-fields.adoc[] 
+include::{snippets}/user-signUp/response-fields.adoc[] 
 
 ==== 회원가입 실패(중복된 아이디)
 include::{snippets}/DuplicateException/http-response.adoc[]
@@ -55,7 +55,7 @@ include::{snippets}/upload/curl-request.adoc[]
 
 include::{snippets}/upload/http-request.adoc[]
 
-include::{snippets}/upload/httpie-request.adoc[]
+include::{snippets}/upload/request-headers.adoc[]
 
 include::{snippets}/upload/request-parts.adoc[]
 
@@ -73,6 +73,10 @@ include::{snippets}/upload/response-fields.adoc[]
 === Request
 
 include::{snippets}/post-list/http-request.adoc[]
+
+include::{snippets}/post-list/request-headers.adoc[]
+
+include::{snippets}/post-list/request-parameters.adoc[]
 
 === Response
 

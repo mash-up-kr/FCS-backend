@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PostGetResponse {
+public class PostResponse {
 
 	private Long id;
 	private String photoUrl;
@@ -20,9 +20,10 @@ public class PostGetResponse {
 	private Integer temperature;
 	private List<Long> styleIds;
 	private String date;
+	private String nickname;
 
-	public static PostGetResponse of(Post post) {
-		return PostGetResponse.builder()
+	public static PostResponse of(Post post) {
+		return PostResponse.builder()
 				.id(post.getId())
 				.photoUrl(post.getPhotoUrl())
 				.message(post.getMessage())
@@ -31,6 +32,7 @@ public class PostGetResponse {
 				.temperature(post.getTemperature())
 				.styleIds(post.getStyleIds())
 				.date(DateUtils.toDateStr(post.getDate()))
+				.nickname(post.getUser().getNickname())
 				.build();
 	}
 }

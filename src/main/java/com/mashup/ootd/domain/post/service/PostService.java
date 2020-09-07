@@ -3,12 +3,18 @@ package com.mashup.ootd.domain.post.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
-import com.mashup.ootd.domain.post.dto.PostGetResponse;
+import com.mashup.ootd.domain.post.dto.PostListRequest;
+import com.mashup.ootd.domain.post.dto.PostListResponse;
+import com.mashup.ootd.domain.post.dto.PostResponse;
 import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.repository.PostRepository;
 import com.mashup.ootd.domain.style.domain.Style;
@@ -26,6 +32,9 @@ public class PostService {
 	private final StyleService styleService;
 
 	private static final String DIRECTORY_NAME = "post";
+	
+	private static final int DEFAULT_PAGE_SIZE = 10;
+	private static final PageRequest PAGE_REQUEST = PageRequest.of(0, DEFAULT_PAGE_SIZE, Sort.by(Direction.DESC, "id"));
 
 	@Transactional
 	public PostCreateResponse create(User user, PostCreateRequest dto) {
@@ -34,7 +43,7 @@ public class PostService {
 
 		Post post = dto.toEntity(url);
 		post.setUser(user);
-		
+
 		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
 		post.addStyles(styles);
 
@@ -43,10 +52,24 @@ public class PostService {
 		return new PostCreateResponse(post.getId(), post.getPhotoUrl());
 	}
 
-	public List<PostGetResponse> listTop20(){
+	public List<PostResponse> listTop20() {
 		return postRepository.findTop20ByOrderByIdDesc().stream()
-				.map(PostGetResponse::of)
+				.map(PostResponse::of)
 				.collect(Collectors.toList());
+	}
+
+	public PostListResponse list(PostListRequest dto) {
+		Page<Post> postPage = postRepository.findAllByFilter(
+				dto.getStyleIds(), 
+				dto.getWeather(), 
+				dto.getMinTemp(),
+				dto.getMaxTemp(), 
+				dto.getLastPostId(), 
+				PAGE_REQUEST);
+		
+		List<PostResponse> posts = postPage.getContent().stream().map(PostResponse::of).collect(Collectors.toList());
+
+		return PostListResponse.of(posts, postPage.hasNext());
 	}
 
 }
