@@ -3,14 +3,15 @@ package com.mashup.ootd.web.controller.user;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.jwt.service.JwtService;
+import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
-import com.mashup.ootd.domain.user.dto.SignInResponse;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.dto.UserResponse;
 import com.mashup.ootd.domain.user.entity.User;
@@ -60,6 +61,19 @@ public class UserController {
 						.code(HttpStatus.OK.value())
 						.msg("로그인 성공")
 						.data(new UserResponse(user))
+						.build());
+	}
+	
+	@GetMapping("/access-token-info")
+	public ResponseEntity<OotdResponse<AccessTokenInfoResponse>> getInfo(User user) {
+		AccessTokenInfoResponse response = userService.getInfo(user);
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(OotdResponse.<AccessTokenInfoResponse>builder()
+						.code(HttpStatus.OK.value())
+						.msg("Access-Token 정보")
+						.data(response)
 						.build());
 	}
 

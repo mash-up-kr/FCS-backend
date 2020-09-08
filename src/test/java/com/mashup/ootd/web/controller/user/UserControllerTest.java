@@ -1,19 +1,16 @@
 package com.mashup.ootd.web.controller.user;
 
-import static com.mashup.ootd.ApiDocumentUtils.getDocumentRequest;
-import static com.mashup.ootd.ApiDocumentUtils.getDocumentResponse;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static com.mashup.ootd.ApiDocumentUtils.*;
+import static java.util.stream.Collectors.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.BDDMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -37,8 +35,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashup.ootd.config.JsonConfig;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
+import com.mashup.ootd.domain.exception.UnauthorizedException;
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.style.domain.Style;
+import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.AuthType;
@@ -188,6 +188,62 @@ public class UserControllerTest {
 		result.andDo(print())
 				.andExpect(status().isNotFound())
 				.andDo(document("NotFoundEntityException",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("에러 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("에러 메세지")
+						)
+				));
+	}
+	
+	@Test
+	void test_getInfo() throws Exception {
+		
+		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
+		given(userService.getInfo(any())).willReturn(AccessTokenInfoResponse.of(1L));
+		
+		// when
+		String jwt = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
+		ResultActions result = mockMvc.perform(get("/api/users/access-token-info")
+				.header(HttpHeaders.AUTHORIZATION, jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isOk())
+				.andDo(document("access-token-info",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지"),
+								fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("유저 Id")
+						)
+				));
+	}
+	
+	@Test
+	void test_UnauthorizedException() throws JsonProcessingException, Exception {
+		// given
+		doThrow(new UnauthorizedException(UnauthorizedException.JWT_TOKEN_ERROR_MSG))
+			.when(jwtService).isUsable(any());
+		
+		// when
+		ResultActions result = mockMvc.perform(get("/api/users/access-token-info")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isUnauthorized())
+				.andDo(document("UnauthorizedException",
 						getDocumentRequest(),
 						getDocumentResponse(),
 						responseFields(

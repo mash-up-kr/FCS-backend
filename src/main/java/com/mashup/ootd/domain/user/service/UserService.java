@@ -9,6 +9,7 @@ import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.service.StyleService;
+import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.User;
@@ -48,6 +49,10 @@ public class UserService {
 	public User get(Long id) {
 		return userRepository.findById(id)
 				.orElseThrow(NotFoundEntityException::new);
+	}
+	
+	public AccessTokenInfoResponse getInfo(User user) {
+		return AccessTokenInfoResponse.of(user.getId());
 	}
 
 }

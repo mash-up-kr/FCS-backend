@@ -7,7 +7,6 @@
 :sectlinks:
 
 
-[[User]]
 == 회원가입
 
 === Request
@@ -44,9 +43,29 @@ include::{snippets}/user-signIn/response-headers.adoc[]
 include::{snippets}/user-signIn/response-fields.adoc[]
 
 ==== 로그인 실패(회원이 아닌 경우)
+
 include::{snippets}/NotFoundEntityException/http-response.adoc[]
 
-[[Post]]
+
+== 토큰 유효성 검사
+
+=== Request
+
+include::{snippets}/access-token-info/http-request.adoc[]
+
+include::{snippets}/access-token-info/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/access-token-info/http-response.adoc[]
+
+include::{snippets}/access-token-info/response-fields.adoc[]
+
+==== 유효하지 않은 토큰일 경우
+
+include::{snippets}/UnauthorizedException/http-response.adoc[]
+
+
 == 파일 업로드
 
 === Request
@@ -85,7 +104,6 @@ include::{snippets}/post-list/http-response.adoc[]
 include::{snippets}/post-list/response-fields.adoc[]
 
 
-[[Style]]
 == 스타일 정보
 
 === Request
@@ -99,7 +117,6 @@ include::{snippets}/style-list/http-response.adoc[]
 include::{snippets}/style-list/response-fields.adoc[]
 
 
-[[Exception]]
 == 예외
 
 === NotFoundEntityException
@@ -109,5 +126,9 @@ include::{snippets}/NotFoundEntityException/http-response.adoc[]
 === DuplicateException
 
 include::{snippets}/DuplicateException/http-response.adoc[]
+
+=== UnauthorizedException
+
+include::{snippets}/UnauthorizedException/http-response.adoc[]
 
 include::{snippets}/NotFoundEntityException/response-fields.adoc[]
