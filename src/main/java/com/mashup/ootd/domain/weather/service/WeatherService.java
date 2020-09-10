@@ -34,27 +34,51 @@ public class WeatherService {
             HttpHeaders header = new HttpHeaders(); //header? body?
             HttpEntity<?> entity = new HttpEntity<>(header);
             //원랜 dt= 를 호출해서 historical date 를 넣어줘야함. 지금 포스트는 무저건 현재 시각으로만 생성 가능하게 했으므로 후에 리팩토링
-            String apiURL = new StringBuilder().append("https://api.openweathermap.org/data/2.5/onecall?").append("lat=").append(lat).append("&lon=").append(lon).append("&exclude=minutely,hourly,daily").append("&units=metric").append("&appid=YourApiKey").toString();
+            String apiURL = new StringBuilder().append("https://api.openweathermap.org/data/2.5/onecall?").append("lat=").append(lat).append("&lon=").append(lon).append("&exclude=hourly").append("&units=metric").append("&appid=YourAppID").toString();
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiURL).build();
 
             ResponseEntity<Map> postWeatherResponseEntity = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
 
             JSONObject bigObj = new JSONObject(Objects.requireNonNull(postWeatherResponseEntity.getBody()));
             LinkedHashMap smallObj = (LinkedHashMap) bigObj.get("current");
-            //temp 는 원래 double 타입으로 전달
-            double element = (double) smallObj.get("temp");
-            String convertedElement = Double.toString(element);
-            postWeather.setApparentTemp(convertedElement);
+            try {
+                postWeather.setApparentTemp(Double.toString((double)smallObj.get("temp")));
+            } catch (ClassCastException e) {
+                postWeather.setApparentTemp(Integer.toString((int)smallObj.get("temp")));
+            }
 
-            element = (double) smallObj.get("feels_like");
-            convertedElement = Double.toString(element);
-            postWeather.setWindChillTemp(convertedElement);
+            try {
+                postWeather.setWindChillTemp(Double.toString((double)smallObj.get("feels_like")));
+            } catch (ClassCastException e) {
+                postWeather.setWindChillTemp(Integer.toString((int)smallObj.get("feels_like")));
+            }
 
-            //weather 안엔 제이슨 배열이 오므로(제이슨 여러개) 이거 처리법 연구해보삼
             ArrayList weatherObjList = (ArrayList) smallObj.get("weather");
             smallObj = (LinkedHashMap) weatherObjList.get(0);
-            convertedElement = (String) smallObj.get("main");
-            postWeather.setDescription(convertedElement);
+            postWeather.setDescription((String)smallObj.get("main"));
+
+            weatherObjList = (ArrayList) bigObj.get("minutely");
+            smallObj = (LinkedHashMap) weatherObjList.get(0);
+            try {
+                postWeather.setPrecipitation(Double.toString((double)smallObj.get("precipitation")));
+            } catch (ClassCastException e) {
+                postWeather.setPrecipitation(Integer.toString((int)smallObj.get("precipitation")));
+            }
+
+            weatherObjList = (ArrayList) bigObj.get("daily");
+            smallObj = (LinkedHashMap) weatherObjList.get(0);
+            smallObj = (LinkedHashMap) smallObj.get("temp");
+            try {
+                postWeather.setMinTemp(Double.toString((double)smallObj.get("min")));
+            } catch (ClassCastException e) {
+                postWeather.setMinTemp(Integer.toString((int)smallObj.get("min")));
+            }
+
+            try {
+                postWeather.setMaxTemp(Double.toString((double)smallObj.get("max")));
+            } catch (ClassCastException e) {
+                postWeather.setMaxTemp(Integer.toString((int)smallObj.get("max")));
+            }
 
             return postWeather;
         } catch (Exception e) {

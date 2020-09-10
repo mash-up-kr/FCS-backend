@@ -14,14 +14,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @RunWith(SpringRunner.class)//이것도 종류 검색좀...
 @RestClientTest(WeatherService.class)
 public class WeatherServiceTest {
-    /*
+
     @Test
     public void getPostWeatherInfoTest() {
         WeatherService weatherService = new WeatherService();
-        PostWeather result = weatherService.getPostWeatherInfo("40.12", "-96.66");
+        //PostWeather result = weatherService.getPostWeatherInfo("40.12", "-96.66");
+        PostWeather result = weatherService.getPostWeatherInfo("37.3595669","127.1054065");
         System.out.println(result);
     }
-     */
 
     @Test
     public void getGeoInfoTest() {
