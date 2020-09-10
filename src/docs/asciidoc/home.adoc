@@ -116,6 +116,44 @@ include::{snippets}/style-list/http-response.adoc[]
 
 include::{snippets}/style-list/response-fields.adoc[]
 
+== 날씨 정보
+
+=== Request
+
+include::{snippets}/weather/http-request.adoc[]
+
+include::{snippets}/weather/request-headers.adoc[]
+
+include::{snippets}/weather/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/weather/http-response.adoc[]
+
+include::{snippets}/weather/response-fields.adoc[]
+
+==== 날씨 정보
+
+|===
+|weather|Description
+
+|`+CLEAR+`
+|맑음
+
+|`+CLOUDS+`
+|구름
+
+|`+RAIN+`
+|비
+
+|`+SNOW+`
+|눈
+
+|`+THUNDERSTORM+`
+|천둥
+
+|===
+
 
 == 예외
 
