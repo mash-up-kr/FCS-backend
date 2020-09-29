@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.mashup.ootd.domain.comment.entity.Comment;
 import com.mashup.ootd.domain.style.domain.PostStyle;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.entity.User;
@@ -46,6 +47,9 @@ public class Post {
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<PostStyle> postStyles = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
 
 	private String photoUrl;
 	
