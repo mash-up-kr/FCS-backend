@@ -15,45 +15,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.mashup.ootd.config.JsonConfig;
-import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.dto.StyleResponse;
 import com.mashup.ootd.domain.style.service.StyleService;
-import com.mashup.ootd.domain.user.service.UserService;
+import com.mashup.ootd.web.controller.ControllerTest;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(StyleController.class)
-@AutoConfigureRestDocs
-@Import(JsonConfig.class)
-public class StyleControllerTest {
+public class StyleControllerTest extends ControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-	
 	@MockBean
 	private StyleService styleService;
 	
-	@MockBean
-	private JwtService jwtService;
-	
-	@MockBean
-	private UserService userService;
-
 	@Test
 	public void test_list() throws Exception {
 

@@ -10,52 +10,30 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static java.util.stream.Collectors.*;
 import static org.mockito.BDDMockito.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.mashup.ootd.ApiDocumentUtils.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.mashup.ootd.config.JsonConfig;
-import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostListResponse;
 import com.mashup.ootd.domain.post.dto.PostResponse;
-import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.post.service.PostService;
-import com.mashup.ootd.domain.user.service.UserService;
+import com.mashup.ootd.web.controller.ControllerTest;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(PostController.class)
-@AutoConfigureRestDocs
-@Import(JsonConfig.class)
-public class PostControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
+public class PostControllerTest extends ControllerTest {
 
 	@MockBean
 	private PostService postService;
-	
-	@MockBean
-	private JwtService jwtService;
-	
-	@MockBean
-	private UserService userService;
 	
 	@Test
 	public void test_create() throws Exception {

@@ -17,52 +17,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashup.ootd.config.JsonConfig;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.exception.UnauthorizedException;
-import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.AuthType;
 import com.mashup.ootd.domain.user.entity.User;
-import com.mashup.ootd.domain.user.service.UserService;
+import com.mashup.ootd.web.controller.ControllerTest;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(UserController.class)
-@AutoConfigureRestDocs
-@Import(JsonConfig.class)
-public class UserControllerTest {
+public class UserControllerTest extends ControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
-	@MockBean
-	private UserService userService;
-	
-	@MockBean
-	private JwtService jwtService;
-	
 	@Test
 	void test_SignUp() throws JsonProcessingException, Exception {
 		// given

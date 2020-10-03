@@ -14,42 +14,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.mashup.ootd.config.JsonConfig;
-import com.mashup.ootd.domain.jwt.service.JwtService;
-import com.mashup.ootd.domain.user.service.UserService;
 import com.mashup.ootd.domain.weather.dto.WeatherResponse;
 import com.mashup.ootd.domain.weather.service.WeatherService;
+import com.mashup.ootd.web.controller.ControllerTest;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(WeatherController.class)
-@AutoConfigureRestDocs
-@Import(JsonConfig.class)
-public class WeatherControllerTest {
-	
-	@Autowired
-	private MockMvc mockMvc;
+public class WeatherControllerTest extends ControllerTest {
 	
 	@MockBean
 	private WeatherService weatherService;
-	
-	@MockBean
-	private JwtService jwtService;
-	
-	@MockBean
-	private UserService userService;
 	
 	@Test
 	void test_getWeather() throws Exception {
