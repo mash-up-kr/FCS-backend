@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.post.dto.PostCreateRequest;
 import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.post.dto.PostListRequest;
@@ -70,6 +71,10 @@ public class PostService {
 		List<PostResponse> posts = postPage.getContent().stream().map(PostResponse::of).collect(Collectors.toList());
 
 		return PostListResponse.of(posts, postPage.hasNext());
+	}
+
+	public Post get(Long postId) {
+		return postRepository.findById(postId).orElseThrow(NotFoundEntityException::new);
 	}
 
 }
