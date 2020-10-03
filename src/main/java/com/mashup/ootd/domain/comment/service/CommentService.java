@@ -1,9 +1,13 @@
 package com.mashup.ootd.domain.comment.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.mashup.ootd.domain.comment.dto.CommentCreateRequest;
 import com.mashup.ootd.domain.comment.dto.CommentCreateResponse;
+import com.mashup.ootd.domain.comment.dto.CommentResponse;
 import com.mashup.ootd.domain.comment.entity.Comment;
 import com.mashup.ootd.domain.comment.repository.CommentRepository;
 import com.mashup.ootd.domain.post.entity.Post;
@@ -25,6 +29,12 @@ public class CommentService {
 		Comment comment = commentRepository.save(new Comment(dto.getMessage(), user, post));
 		
 		return new CommentCreateResponse(comment.getId(), comment.getMessage());
+	}
+
+	public List<CommentResponse> list(Long postId) {
+		List<Comment> comments = commentRepository.findByPostId(postId);
+
+		return comments.stream().map(CommentResponse::of).collect(Collectors.toList());
 	}
 
 }

@@ -53,12 +53,6 @@ public class PostService {
 		return new PostCreateResponse(post.getId(), post.getPhotoUrl());
 	}
 
-	public List<PostResponse> listTop20() {
-		return postRepository.findTop20ByOrderByIdDesc().stream()
-				.map(PostResponse::of)
-				.collect(Collectors.toList());
-	}
-
 	public PostListResponse list(PostListRequest dto) {
 		Page<Post> postPage = postRepository.findAllByFilter(
 				dto.getStyleIds(), 
@@ -76,5 +70,4 @@ public class PostService {
 	public Post get(Long postId) {
 		return postRepository.findById(postId).orElseThrow(NotFoundEntityException::new);
 	}
-
 }

@@ -16,7 +16,9 @@ import com.mashup.ootd.domain.post.entity.Post;
 import com.mashup.ootd.domain.user.entity.User;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 @Entity
 public class Comment {
