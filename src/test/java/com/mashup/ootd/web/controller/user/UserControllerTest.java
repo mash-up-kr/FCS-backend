@@ -49,7 +49,7 @@ public class UserControllerTest extends ControllerTest {
 		given(userService.signUp(any())).willReturn(user);
 		
 		// when
-		SignUpRequest dto = new SignUpRequest("123", "KAKAO", "닉네임", Arrays.asList(1L, 2L, 3L));
+		SignUpRequest dto = new SignUpRequest("123", "KAKAO", "닉네임", "profileImageUrl", Arrays.asList(1L, 2L, 3L));
 		
 		ResultActions result = mockMvc.perform(post("/api/users/sign-up")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -66,6 +66,7 @@ public class UserControllerTest extends ControllerTest {
 								fieldWithPath("uid").type(JsonFieldType.STRING).description("OAuth 고유 id"),
 								fieldWithPath("authType").type(JsonFieldType.STRING).description("OAuth 타입"),
 								fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+								fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("유저 프로필 이미지 url"),
 								fieldWithPath("styleIds").type(JsonFieldType.ARRAY).description("선택한 스타일 Id 목록")
 						),
 						responseHeaders(
@@ -86,7 +87,7 @@ public class UserControllerTest extends ControllerTest {
 		doThrow(new DuplicateException()).when(userService).signUp(any());
 		
 		// when
-		SignUpRequest dto = new SignUpRequest("123", "KAKAO", "닉네임", Arrays.asList(1L, 2L, 3L));
+		SignUpRequest dto = new SignUpRequest("123", "KAKAO", "닉네임", "profileImageUrl", Arrays.asList(1L, 2L, 3L));
 		
 		ResultActions result = mockMvc.perform(post("/api/users/sign-up")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -229,7 +230,7 @@ public class UserControllerTest extends ControllerTest {
 	}
 	
 	private User getMockUser() {
-		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷");
+		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷", "profileImageUrl");
 		
 		List<Style> styles = new ArrayList<>();
 		styles.add(Style.builder().id(1L).build());

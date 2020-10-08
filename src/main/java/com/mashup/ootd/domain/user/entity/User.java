@@ -40,6 +40,8 @@ public class User {
 	private AuthType authType;
 
 	private String nickname;
+	
+	private String profileImageUrl;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<UserStyle> userStyles = new ArrayList<>();
@@ -60,10 +62,11 @@ public class User {
 	}
 
 	@Builder
-	public User(String uid, String authType, String nickname) {
+	public User(String uid, String authType, String nickname, String profileImageUrl) {
 		this.uid = uid;
 		this.authType = AuthType.valueOf(authType);
 		this.nickname = nickname;
+		this.profileImageUrl = profileImageUrl;
 	}
 
 	public void addStyles(List<Style> styles) {

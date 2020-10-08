@@ -17,6 +17,7 @@ public class SignUpRequest {
 	private String uid;
 	private String authType;
 	private String nickname;
+	private String profileImageUrl;
 	private List<Long> styleIds;
 	
 	public AuthType getAuthType() {
@@ -28,6 +29,7 @@ public class SignUpRequest {
 				.uid(uid)
 				.authType(authType)
 				.nickname(nickname)
+				.profileImageUrl(profileImageUrl)
 				.build();
 	}
 }

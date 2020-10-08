@@ -33,7 +33,7 @@ public class CommentServiceTest {
 				.message("포스팅")
 				.build();
 		Long postId = 1L;
-		User user = new User("1234", "KAKAO", "닉네임");
+		User user = new User("1234", "KAKAO", "닉네임", "profileImageUrl");
 		String message = "댓글";
 
 		Comment comment = new Comment(message, user, post);
