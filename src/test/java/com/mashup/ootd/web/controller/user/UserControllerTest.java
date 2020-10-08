@@ -76,6 +76,7 @@ public class UserControllerTest extends ControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지"),
 								fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+								fieldWithPath("data.profileImageUrl").type(JsonFieldType.STRING).description("유저 프로필 이미지 url"),
 								fieldWithPath("data.styleIds").type(JsonFieldType.ARRAY).description("스타일 정보")
 						)
 				));
@@ -142,6 +143,7 @@ public class UserControllerTest extends ControllerTest {
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지"),
 								fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+								fieldWithPath("data.profileImageUrl").type(JsonFieldType.STRING).description("유저 프로필 이미지 url"),
 								fieldWithPath("data.styleIds").type(JsonFieldType.ARRAY).description("스타일 정보")
 						)
 				));
