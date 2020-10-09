@@ -43,7 +43,7 @@ public class User {
 	
 	private String profileImageUrl;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserStyle> userStyles = new ArrayList<>();
 
 	private LocalDateTime createdAt;
@@ -68,15 +68,16 @@ public class User {
 		this.nickname = nickname;
 		this.profileImageUrl = profileImageUrl;
 	}
-
-	public void addStyles(List<Style> styles) {
+	
+	public void setStyles(List<Style> styles) {
+		userStyles.clear();
 		userStyles.addAll(
 				styles.stream()
-				.map(style -> UserStyle.of(this, style))
-				.collect(Collectors.toList())
-				);
+					.map(style -> UserStyle.of(this, style))
+					.collect(Collectors.toList())
+				); 
 	}
-	
+
 	public List<Long> getStyleIds() {
 		return userStyles.stream()
 				.map(userStyle -> userStyle.getStyle().getId())

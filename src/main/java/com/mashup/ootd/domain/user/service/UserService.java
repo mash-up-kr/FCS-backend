@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.style.domain.Style;
+import com.mashup.ootd.domain.style.domain.UserStyle;
 import com.mashup.ootd.domain.style.service.StyleService;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
+import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.User;
@@ -32,7 +34,7 @@ public class UserService {
 		User user = dto.toEntity();
 		
 		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
-		user.addStyles(styles);
+		user.setStyles(styles);
 		
 		userRepository.save(user);
 		
@@ -61,6 +63,14 @@ public class UserService {
 			throw new DuplicateException("중복된 닉네임입니다.");
 
 		return true;
+	}
+	
+	@Transactional
+	public void changeStyles(User user, ChangeStylesRequest dto) {
+		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
+		
+		user.setStyles(styles);
+		
 	}
 
 }

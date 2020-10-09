@@ -30,6 +30,7 @@ import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.exception.UnauthorizedException;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
+import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
 import com.mashup.ootd.domain.user.entity.AuthType;
@@ -291,6 +292,44 @@ public class UserControllerTest extends ControllerTest {
 				));
 	}
 	
+	@Test
+	@DisplayName("유저 스타일 변경")
+	void test_changeStyles() throws Exception {
+
+		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
+		given(userService.getInfo(any())).willReturn(AccessTokenInfoResponse.of(1L));
+		
+		// when
+		ChangeStylesRequest dto = new ChangeStylesRequest(Arrays.asList(1L, 3L));
+		
+		String jwt = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
+		ResultActions result = mockMvc.perform(put("/api/users/styles")
+				.header(HttpHeaders.AUTHORIZATION, jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(dto)));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isOk())
+				.andDo(document("user-changeStyle",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
+						requestFields(
+								fieldWithPath("styleIds").type(JsonFieldType.ARRAY).description("변경할 스타일 Id 목록")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지")
+						)
+				));
+	}
+	
 	private User getMockUser() {
 		User user = new User("1234", AuthType.KAKAO.toString(), "오늘옷", "profileImageUrl");
 		
@@ -298,7 +337,7 @@ public class UserControllerTest extends ControllerTest {
 		styles.add(Style.builder().id(1L).build());
 		styles.add(Style.builder().id(2L).build());
 		styles.add(Style.builder().id(3L).build());
-		user.addStyles(styles);
+		user.setStyles(styles);
 		
 		return user;
 	}

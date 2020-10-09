@@ -85,6 +85,24 @@ include::{snippets}/user-nickname-checkDuplicate/response-fields.adoc[]
 include::{snippets}/user-nickname-checkDuplicate-conflict/http-response.adoc[]
 
 
+== 유저 스타일 변경
+
+=== Request
+
+include::{snippets}/user-changeStyle/http-request.adoc[]
+
+include::{snippets}/user-changeStyle/request-headers.adoc[]
+
+include::{snippets}/user-changeStyle/request-fields.adoc[]
+
+
+=== Response
+
+include::{snippets}/user-changeStyle/http-response.adoc[]
+
+include::{snippets}/user-changeStyle/response-fields.adoc[]
+
+
 == 파일 업로드
 
 === Request
