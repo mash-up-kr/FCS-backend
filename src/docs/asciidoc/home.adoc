@@ -121,6 +121,26 @@ include::{snippets}/user-changeNickname/http-response.adoc[]
 include::{snippets}/user-changeNickname/response-fields.adoc[]
 
 
+== 유저 프로필 사진 변경
+
+=== Request
+
+include::{snippets}/user-changeProfileImage/curl-request.adoc[]
+
+include::{snippets}/user-changeProfileImage/http-request.adoc[]
+
+include::{snippets}/user-changeProfileImage/request-headers.adoc[]
+
+include::{snippets}/user-changeProfileImage/request-parts.adoc[]
+
+
+=== Response
+
+include::{snippets}/user-changeProfileImage/http-response.adoc[]
+
+include::{snippets}/user-changeProfileImage/response-fields.adoc[]
+
+
 == 파일 업로드
 
 === Request

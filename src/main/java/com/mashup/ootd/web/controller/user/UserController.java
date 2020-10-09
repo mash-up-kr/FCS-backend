@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageResponse;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -115,6 +117,21 @@ public class UserController {
 				.body(OotdResponse.<Void>builder()
 						.code(HttpStatus.OK.value())
 						.msg("닉네임 변경 완료")
+						.build());
+	}
+
+	@PostMapping("/profile-image")
+	public ResponseEntity<OotdResponse<ChangeProfileImageResponse>> changeProfileImage(User user,
+			ChangeProfileImageRequest dto) {
+		
+		ChangeProfileImageResponse response = userService.changeProfileImage(user, dto);
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(OotdResponse.<ChangeProfileImageResponse>builder()
+						.code(HttpStatus.OK.value())
+						.msg("프로필 사진 변경 완료")
+						.data(response)
 						.build());
 	}
 

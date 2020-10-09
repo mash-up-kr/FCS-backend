@@ -7,10 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
+import com.mashup.ootd.domain.post.service.FileUploader;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.style.service.StyleService;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageResponse;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -25,6 +28,9 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final StyleService styleService;
+	private final FileUploader fileUploader;
+	
+	private static final String DIRECTORY_NAME = "user";
 
 	@Transactional
 	public User signUp(SignUpRequest dto) {
@@ -79,6 +85,15 @@ public class UserService {
 		checkDuplicate(dto.getNickname());
 		
 		user.setNickname(dto.getNickname());
+	}
+
+	@Transactional
+	public ChangeProfileImageResponse changeProfileImage(User user, ChangeProfileImageRequest dto) {
+		String url = fileUploader.upload(dto.getProfileImage(), DIRECTORY_NAME);
+
+		user.setProfileImageUrl(url);
+
+		return new ChangeProfileImageResponse(url);
 	}
 
 }

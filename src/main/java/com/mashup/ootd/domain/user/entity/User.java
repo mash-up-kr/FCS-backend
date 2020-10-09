@@ -81,6 +81,10 @@ public class User {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
 
 	public List<Long> getStyleIds() {
 		return userStyles.stream()

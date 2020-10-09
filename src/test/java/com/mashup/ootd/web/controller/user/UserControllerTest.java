@@ -28,9 +28,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.exception.UnauthorizedException;
+import com.mashup.ootd.domain.post.dto.PostCreateResponse;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
 import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageRequest;
+import com.mashup.ootd.domain.user.dto.ChangeProfileImageResponse;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -367,6 +370,44 @@ public class UserControllerTest extends ControllerTest {
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지")
 						)
 				));
+	}
+	
+	@Test
+	@DisplayName("프로필 사진 변경")
+	void test_changeProfileImage() throws Exception {
+
+		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
+		ChangeProfileImageResponse response = new ChangeProfileImageResponse(".../image.png");
+		given(userService.changeProfileImage(any(), any())).willReturn(response);
+		
+		// when
+		String jwt = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
+		ResultActions result = mockMvc.perform(fileUpload("/api/users/profile-image")
+				.file("profileImage", "image".getBytes())
+				.header(HttpHeaders.AUTHORIZATION, jwt))
+				.andExpect(status().isOk());
+
+		// then
+		result.andDo(print())
+				.andExpect(status().isOk())
+				.andDo(document("user-changeProfileImage",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
+						requestParts(
+								partWithName("profileImage").description("변경할 프로필 사진")
+						), 
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메세지"),
+								fieldWithPath("data.profileImageUrl").type(JsonFieldType.STRING).description("프로필 사진 url")
+						)
+				));
+		
 	}
 	
 	private User getMockUser() {
