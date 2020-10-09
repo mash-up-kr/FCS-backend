@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.ootd.domain.jwt.service.JwtService;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
+import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -102,6 +103,18 @@ public class UserController {
 				.body(OotdResponse.<Void>builder()
 						.code(HttpStatus.OK.value())
 						.msg("스타일 변경 완료")
+						.build());
+	}
+	
+	@PutMapping("/nickname")
+	public ResponseEntity<OotdResponse<Void>> changeNickname(User user, @RequestBody ChangeNicknameRequest dto) {
+		userService.changeNickname(user, dto);
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(OotdResponse.<Void>builder()
+						.code(HttpStatus.OK.value())
+						.msg("닉네임 변경 완료")
 						.build());
 	}
 

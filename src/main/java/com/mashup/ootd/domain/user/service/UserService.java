@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mashup.ootd.domain.exception.DuplicateException;
 import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.style.domain.Style;
-import com.mashup.ootd.domain.style.domain.UserStyle;
 import com.mashup.ootd.domain.style.service.StyleService;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
+import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -30,6 +30,8 @@ public class UserService {
 	public User signUp(SignUpRequest dto) {
 		if (userRepository.findByUidAndAuthType(dto.getUid(), dto.getAuthType()).isPresent())
 			throw new DuplicateException();
+		
+		checkDuplicate(dto.getNickname());
 
 		User user = dto.toEntity();
 		
@@ -70,7 +72,13 @@ public class UserService {
 		List<Style> styles = styleService.listByStyleIds(dto.getStyleIds());
 		
 		user.setStyles(styles);
+	}
+	
+	@Transactional
+	public void changeNickname(User user, ChangeNicknameRequest dto) {
+		checkDuplicate(dto.getNickname());
 		
+		user.setNickname(dto.getNickname());
 	}
 
 }

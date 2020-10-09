@@ -103,6 +103,24 @@ include::{snippets}/user-changeStyle/http-response.adoc[]
 include::{snippets}/user-changeStyle/response-fields.adoc[]
 
 
+== 유저 닉네임 변경
+
+=== Request
+
+include::{snippets}/user-changeNickname/http-request.adoc[]
+
+include::{snippets}/user-changeNickname/request-headers.adoc[]
+
+include::{snippets}/user-changeNickname/request-fields.adoc[]
+
+
+=== Response
+
+include::{snippets}/user-changeNickname/http-response.adoc[]
+
+include::{snippets}/user-changeNickname/response-fields.adoc[]
+
+
 == 파일 업로드
 
 === Request

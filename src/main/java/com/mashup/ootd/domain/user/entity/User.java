@@ -77,6 +77,10 @@ public class User {
 					.collect(Collectors.toList())
 				); 
 	}
+	
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public List<Long> getStyleIds() {
 		return userStyles.stream()

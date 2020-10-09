@@ -30,6 +30,7 @@ import com.mashup.ootd.domain.exception.NotFoundEntityException;
 import com.mashup.ootd.domain.exception.UnauthorizedException;
 import com.mashup.ootd.domain.style.domain.Style;
 import com.mashup.ootd.domain.user.dto.AccessTokenInfoResponse;
+import com.mashup.ootd.domain.user.dto.ChangeNicknameRequest;
 import com.mashup.ootd.domain.user.dto.ChangeStylesRequest;
 import com.mashup.ootd.domain.user.dto.SignInRequest;
 import com.mashup.ootd.domain.user.dto.SignUpRequest;
@@ -322,6 +323,44 @@ public class UserControllerTest extends ControllerTest {
 						),
 						requestFields(
 								fieldWithPath("styleIds").type(JsonFieldType.ARRAY).description("변경할 스타일 Id 목록")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지")
+						)
+				));
+	}
+	
+	@Test
+	@DisplayName("유저 닉네임 변경")
+	void test_changeNickname() throws Exception {
+
+		// given
+		given(jwtService.isUsable(any())).willReturn(true);
+		
+		given(userService.getInfo(any())).willReturn(AccessTokenInfoResponse.of(1L));
+		
+		// when
+		ChangeNicknameRequest dto = new ChangeNicknameRequest("닉네임");
+		
+		String jwt = "eyJ9eDBiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxMjM0In0.6xuHoA28UlvljPs6lqrAFpwoPFVaVsF-wa_ABCZTY5Y";
+		ResultActions result = mockMvc.perform(put("/api/users/nickname")
+				.header(HttpHeaders.AUTHORIZATION, jwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(dto)));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isOk())
+				.andDo(document("user-changeNickname",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						requestHeaders(
+								headerWithName("Authorization").description("JWT 토큰")
+						),
+						requestFields(
+								fieldWithPath("nickname").type(JsonFieldType.STRING).description("변경할 닉네임")
 						),
 						responseFields(
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
