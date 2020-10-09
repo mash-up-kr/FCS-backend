@@ -54,5 +54,13 @@ public class UserService {
 	public AccessTokenInfoResponse getInfo(User user) {
 		return AccessTokenInfoResponse.of(user.getId());
 	}
+	
+	public boolean checkDuplicate(String nickname) {
+
+		if (userRepository.findByNickname(nickname).isPresent())
+			throw new DuplicateException("중복된 닉네임입니다.");
+
+		return true;
+	}
 
 }

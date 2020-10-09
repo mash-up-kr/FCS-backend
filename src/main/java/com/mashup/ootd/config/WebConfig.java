@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 	private UserHandlerMethodArgumentResolver userHandlerMethodArgumentResolver;
 
 	private static final String[] EXCLUDE_PATHS = { "/docs/**", "/api/ping", "/api/users/sign-up", "/api/users/sign-in",
-			"/api/styles" };
+			"/api/users/nickname/check/**", "/api/styles" };
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

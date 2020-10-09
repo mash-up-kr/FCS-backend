@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
@@ -224,6 +225,65 @@ public class UserControllerTest extends ControllerTest {
 				.andDo(document("UnauthorizedException",
 						getDocumentRequest(),
 						getDocumentResponse(),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("에러 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("에러 메세지")
+						)
+				));
+	}
+	
+	@DisplayName("닉네임 중복검사 요청")
+	@Test
+	void test_checkDuplicate() throws Exception {
+		// given
+		String nickname = "ootd";
+		given(userService.checkDuplicate(nickname)).willReturn(true);
+
+		// when
+		ResultActions result = mockMvc.perform(get("/api/users/nickname/check/{nickname}", nickname)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isOk())
+				.andDo(document("user-nickname-checkDuplicate",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						pathParameters(
+								parameterWithName("nickname").description("닉네임")
+						),
+						responseFields(
+								fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+								fieldWithPath("msg").type(JsonFieldType.STRING).description("상태 메시지")
+						)
+				));
+	}
+	
+	@Test
+	@DisplayName("닉네임 중복인 경우")
+	void test_checkDuplicate_conflict() throws Exception {
+		// given
+		String nickname = "ootd";
+		given(userService.checkDuplicate(nickname)).willReturn(true);
+
+		doThrow(new DuplicateException("중복된 닉네임입니다."))
+			.when(userService).checkDuplicate(nickname);
+		
+		// when
+		ResultActions result = mockMvc.perform(get("/api/users/nickname/check/{nickname}", nickname)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		// then
+		result.andDo(print())
+				.andExpect(status().isConflict())
+				.andDo(document("user-nickname-checkDuplicate-conflict",
+						getDocumentRequest(),
+						getDocumentResponse(),
+						pathParameters(
+								parameterWithName("nickname").description("닉네임")
+						),
 						responseFields(
 								fieldWithPath("code").type(JsonFieldType.NUMBER).description("에러 코드"),
 								fieldWithPath("msg").type(JsonFieldType.STRING).description("에러 메세지")

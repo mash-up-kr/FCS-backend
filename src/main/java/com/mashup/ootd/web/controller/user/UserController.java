@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +75,19 @@ public class UserController {
 						.code(HttpStatus.OK.value())
 						.msg("Access-Token 정보")
 						.data(response)
+						.build());
+	}
+	
+	@GetMapping("/nickname/check/{nickname}")
+	public ResponseEntity<OotdResponse<UserResponse>> checkDuplicate(@PathVariable(name = "nickname") String nickname) {
+		
+		userService.checkDuplicate(nickname);
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(OotdResponse.<UserResponse>builder()
+						.code(HttpStatus.OK.value())
+						.msg("사용 가능한 닉네임")
 						.build());
 	}
 
